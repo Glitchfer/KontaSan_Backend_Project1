@@ -4,10 +4,17 @@ const {
 } = require('../controller/product')
 
 module.exports = {
-    getAllProduct: () => {
+    getProduct: (limit, offset) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM product`, (error, result) => {
+            connection.query(`SELECT * FROM product LIMIT ? OFFSET ?`, [limit, offset], (error, result) => {
                 !error ? resolve(result) : reject(new Error(error))
+            })
+        })
+    },
+    getProductCount: () => {
+        return new Promise((resolve, reject) => {
+            connection.query("SELECT COUNT(*) as total FROM product", (error, result) => {
+                !error ? resolve(result[0].total) : reject(new Error(error))
             })
         })
     },
@@ -21,6 +28,45 @@ module.exports = {
     getProductByName: (name) => {
         return new Promise((resolve, reject) => {
             connection.query(`SELECT * FROM product WHERE product_name LIKE "%"?"%"`, name, (error, result) => {
+                !error ? resolve(result) : reject(new Error(error))
+            })
+        })
+    },
+    sortProductByName: (value) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT * FROM product ORDER BY product_name ASC`, value, (error, result) => {
+                !error ? resolve(result) : reject(new Error(error))
+            })
+        })
+    },
+    sortProductByCategory: (value) => {
+        return new Promise((resolve, reject) => {
+            connection.query("SELECT * FROM product WHERE category_id = ? ORDER BY product_name ASC", value, (error, result) => {
+                !error ? resolve(result) : reject(new Error(error))
+            })
+        })
+    },
+    sortProductByPrice: (value) => {
+        switch (value) {
+            case "cheap":
+                return new Promise((resolve, reject) => {
+                    connection.query("SELECT * FROM product ORDER BY product_price ASC", (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "expensive":
+                return new Promise((resolve, reject) => {
+                    connection.query("SELECT * FROM product ORDER BY product_price DESC", (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+        }
+    },
+    sortProductByRecent: (value) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT * FROM product ORDER BY product_updated_at DESC`, value, (error, result) => {
                 !error ? resolve(result) : reject(new Error(error))
             })
         })

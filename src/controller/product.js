@@ -1,22 +1,80 @@
 const {
-    getAllProduct,
+    // getAllProduct,
+    getProduct,
+    getProductCount,
     getProductById,
     getProductByName,
+    sortProductByName,
+    sortProductByCategory,
+    sortProductByPrice,
+    sortProductByRecent,
     postProduct,
     patchProduct,
     deleteProduct
     // deleteProduct
 } = require('../model/product')
+const qs = require("querystring")
+const helper = require('../helper');
+// const {
+//     stringify
+// } = require('qs');
+const getPrevLink = (page, currentQuery) => {
 
-const helper = require('../helper')
+    if (page > 1) {
+        const generatePage = {
+            page: page - 1
+        }
+        const resultPrevLink = {
+            ...currentQuery,
+            ...generatePage
+        }
+        return qs.stringify(resultPrevLink)
+    } else {
+        return null
+    }
+}
+const getnextLink = (page, totalPage, currentQuery) => {
 
+    if (page < totalPage) {
+        const generatePage = {
+            page: page + 1
+        }
+        const resultNextLink = {
+            ...currentQuery,
+            ...generatePage
+        }
+        return qs.stringify(resultNextLink)
+    } else {
+        return null
+    }
+}
 module.exports = {
     getAllProduct: async (request, response) => {
+        let {
+            page,
+            limit
+        } = request.query
+        page = parseInt(page)
+        limit = parseInt(limit)
+        const totalData = await getProductCount()
+        const totalPage = Math.ceil(totalData / limit)
+        let offset = page * limit - limit
+        let prevLink = getPrevLink(page, request.query)
+        let nextLink = getnextLink(page, totalPage, request.query)
+        const pageInfo = {
+            page,
+            totalPage,
+            limit,
+            totalData,
+            prevLink: prevLink && `http://127.0.0.1:3001/tutorial?${prevLink}`,
+            nextLink: nextLink && `http://127.0.0.1:3001/tutorial?${nextLink}`
+        }
         try {
-            const result = await getAllProduct();
-            return helper.response(response, 200, "Get Success", result)
+            const result = await getProduct(limit, offset);
+            return helper.response(response, 200, "Get Success", result, pageInfo)
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)
+            // console.log(result)
         }
     },
     getProductById: async (request, response) => {
@@ -58,6 +116,43 @@ module.exports = {
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)
             // console.log(error)
+        }
+    },
+    sortProductBy: async (request, response) => {
+        try {
+            const {
+                value,
+            } = request.params
+            const par = request.params.value
+            // console.log(typeof par)
+            // console.log(par)
+            // console.log(typeof par === "string")
+            if (par == "name") {
+                const result = await sortProductByName();
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par === "food") {
+                const result = await sortProductByCategory(1);
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par === "drink") {
+                const result = await sortProductByCategory(2);
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par === "cake") {
+                const result = await sortProductByCategory(5);
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par === "cheap") {
+                const result = await sortProductByPrice(value);
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par === "expensive") {
+                const result = await sortProductByPrice(value);
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par === "recent") {
+                const result = await sortProductByRecent();
+                return helper.response(response, 200, "Get Success", result)
+            } else {
+                return helper.response(response, 404, "Keyword not available")
+            }
+        } catch (error) {
+            return helper.response(response, 400, "Bad Request", error)
         }
     },
     postProduct: async (request, response) => {
