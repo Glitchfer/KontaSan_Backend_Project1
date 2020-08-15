@@ -1,0 +1,223 @@
+const {
+    getAllTrigger1,
+    getTrigger1ById,
+    getInvoiceId,
+    postTrigger1,
+    patchTrigger1,
+    deleteTrigger1
+} = require('../model/trigger1')
+const {
+    getAllTrigger2,
+    getTrigger2ById,
+    getOrderByInvoiceId,
+    getProductPriceById,
+    postTrigger2,
+    patchTrigger2,
+    deleteTrigger2
+} = require('../model/trigger2')
+
+const helper = require('../helper')
+
+module.exports = {
+    getAllTrigger: async (request, response) => {
+        try {
+            const {
+                url: url = request.params
+            } = request.params
+
+            const par = url.params;
+
+            if (par == "invoice") {
+                const result = await getAllTrigger1();
+                return helper.response(response, 200, "Get Success", result)
+            } else if (par == "orders") {
+                const result = await getAllTrigger2();
+                return helper.response(response, 200, "Get Success", result)
+            } else {
+                return helper.response(response, 400, "Params does not exist")
+            }
+        } catch (error) {
+            return helper.response(response, 400, "Bad Request", error)
+        }
+    },
+    getTriggerById: async (request, response) => {
+        try {
+            const {
+                url: url = request.params,
+                id
+            } = request.params
+            const par = url.params;
+
+            if (par == "invoice") {
+                const result = await getTrigger1ById(id);
+                if (result.length > 0) {
+                    return helper.response(response, 200, "Get Invoice By Id Success", result)
+                } else {
+                    return helper.response(response, 404, `Invoice By Id: ${id} Not Found`)
+                }
+            } else if (par == "orders") {
+                const result = await getTrigger2ById(id);
+                if (result.length > 0) {
+                    return helper.response(response, 200, "Get Orders By Id Success", result)
+                } else {
+                    return helper.response(response, 404, `Prders By Id: ${id} Not Found`)
+                }
+            } else {
+                return helper.response(response, 400, "Params does not exist")
+            }
+        } catch (error) {
+            return helper.response(response, 400, "Bad Request", error)
+        }
+    },
+    postTrigger: async (request, response) => {
+        try {
+            const {
+                url: url = request.params
+            } = request.params
+            const par = url.params;
+            // const invoNum = result.invoice_number; //<-- get id
+            if (par == "invoice") {
+                const setData1 = {
+                    invoice_number: invoice_number = Math.round((Math.random() * 99999) + 10000),
+                    created_at: new Date()
+                }
+                const result = await postTrigger1(setData1)
+                return helper.response(response, 200, "Invoice Created", result)
+            } else if (par == "orders") {
+                const {
+                    cashier_name,
+                    product_id,
+                    item_quantity,
+                    invoice_id
+                } = request.body
+                const setData2 = {
+                    cashier_name,
+                    product_id,
+                    item_quantity
+                }
+                const getProductPrice = await getProductPriceById(product_id);
+                const productPrice = getProductPrice[0].product_price;
+                const setData3 = { //setData3 masih error, belum tau nempatin yg benernya
+                    total_price: productPrice * item_quantity,
+                    payment: "CASH",
+                    invoice_id,
+                    date: new Date()
+                }
+                const setData4 = {
+                    ...setData2,
+                    ...setData3
+                }
+                const checkInvoiceId = await getInvoiceId(invoice_id)
+                if (checkInvoiceId.length > 0) {
+                    const result = await postTrigger2(setData4) //*
+                    return helper.response(response, 200, "Orders Created", result)
+                } else {
+                    return helper.response(response, 404, `Orders By Invoice Id: ${invoice_id} Not Found`)
+                }
+            } else {
+                return helper.response(response, 400, "Params does not exist")
+            }
+        } catch (error) {
+            return helper.response(response, 400, `Bad Request/ Product Doesn't Exsist`, error)
+        }
+    },
+    patchTrigger: async (request, response) => {
+        try {
+            const {
+                id,
+                url: url = request.params
+            } = request.params
+            const par = url.params;
+            if (par == "invoice") {
+                // cek banyaknya item yang berbeda di tabel order yang menggunakan invoice_id yang sama, 
+                // untuk memanggil datanya ditabel invoice
+                const getOrder = await getOrderByInvoiceId(id)
+                const findTotalPayment = getOrder.map(function (value) {
+                    return value.total_price
+                })
+                let totalPrice = 0;
+                for (let i = 0; i <= findTotalPayment.length - 1; i++) {
+                    totalPrice += findTotalPayment[i]
+                }
+                const tax = {
+                    subData1: (totalPrice * 0.1)
+                }
+                const setData = {
+                    total_price: totalPrice,
+                    tax: tax.subData1,
+                    sub_total: (totalPrice + tax.subData1),
+                    updated_at: new Date()
+                }
+                const checkId = await getTrigger1ById(id)
+                if (checkId.length > 0) {
+                    if (getOrder.length > 0) {
+                        const result = await patchTrigger1(setData, id)
+                        return helper.response(response, 201, "Invoice Updated", result)
+                    } else {
+                        return helper.response(response, 404, `Invalid Update, Order by invoice_id: ${id} not found`)
+                    }
+                } else {
+                    return helper.response(response, 404, `Invoice By Id: ${id} Not Found`)
+                }
+            } else if (par == "orders") {
+                const {
+                    cashier_name,
+                    product_id,
+                    item_quantity,
+                    total_price,
+                    invoice_id
+                } = request.body
+                const setData2 = {
+                    cashier_name,
+                    product_id,
+                    item_quantity,
+                    total_price,
+                    payment: "CASH",
+                    invoice_id,
+                    date: new Date()
+                }
+                const checkInvoiceId = await getInvoiceId(invoice_id)
+                if (checkInvoiceId.length > 0) {
+                    const result = await patchTrigger2(setData2)
+                    return helper.response(response, 200, "Orders Updated", result)
+                } else {
+                    return helper.response(response, 404, `Invoice By Id: ${invoice_id} Not Found`)
+                }
+            } else {
+                return helper.response(response, 400, "Params does not exist")
+            }
+        } catch (error) {
+            return helper.response(response, 400, "Bad Request", error)
+        }
+    },
+    deleteTrigger: async (request, response) => {
+        try {
+            const {
+                id,
+                url: url = request.params
+            } = request.params
+            const par = url.params;
+            if (par == "invoice") {
+                const checkId = await getTrigger1ById(id)
+                if (checkId.length > 0) {
+                    const result = await deleteTrigger1(id)
+                    return helper.response(response, 201, "Orders Deleted", result)
+                } else {
+                    return helper.response(response, 404, `Orders By Id: ${id} Not Found`)
+                }
+            } else if (par == "orders") {
+                const checkId = await getTrigger2ById(id)
+                if (checkId.length > 0) {
+                    const result = await deleteTrigger2(id)
+                    return helper.response(response, 201, "Orders Deleted", result)
+                } else {
+                    return helper.response(response, 404, `Orders By Id: ${id} Not Found`)
+                }
+            } else {
+                return helper.response(response, 400, "Params does not exist")
+            }
+        } catch (error) {
+            return helper.response(response, 400, "Bad Request", error)
+        }
+    }
+}
