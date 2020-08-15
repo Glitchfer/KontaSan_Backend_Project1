@@ -124,9 +124,6 @@ module.exports = {
                 value,
             } = request.params
             const par = request.params.value
-            // console.log(typeof par)
-            // console.log(par)
-            // console.log(typeof par === "string")
             if (par == "name") {
                 const result = await sortProductByName();
                 return helper.response(response, 200, "Get Success", result)
@@ -171,8 +168,13 @@ module.exports = {
                 product_status,
                 category_id
             }
-            const result = await postProduct(setData)
-            return helper.response(response, 200, "Product Created", result)
+            const checkName = await getProductByName(product_name)
+            if (checkName.length < 1) {
+                const result = await postProduct(setData)
+                return helper.response(response, 200, "Product Created", result)
+            } else {
+                return helper.response(response, 404, `Same Product Detected, Please Try Again With Other Name`)
+            }
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)
         }
