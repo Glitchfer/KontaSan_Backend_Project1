@@ -1,6 +1,7 @@
 const {
     getAllProduct,
     getProductById,
+    getProductByName,
     postProduct,
     patchProduct,
     deleteProduct
@@ -20,7 +21,6 @@ module.exports = {
     },
     getProductById: async (request, response) => {
         try {
-            // const id = request.params.id <-- dapat dipersingkat
             const {
                 id
             } = request.params
@@ -30,9 +30,34 @@ module.exports = {
             } else {
                 return helper.response(response, 404, `Product By Id: ${id} Not Found`)
             }
-
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)
+        }
+    },
+    getProductByName: async (request, response) => {
+        try {
+            const {
+                name,
+                url: url = request.params
+            } = request.params
+            const par = url.params;
+            if (par == "name") {
+                const getByName = await getProductByName(name);
+                const result = getByName.map(function (value) {
+                    return value
+                })
+                // console.log(getByName)
+                if (result.length > 0) {
+                    return helper.response(response, 200, `Get Product By Word: ${name}`, result)
+                } else {
+                    return helper.response(response, 404, `${name} Not Found`)
+                }
+            } else {
+                return helper.response(response, 400, `Params does not exist, only available for params 'name'`)
+            }
+        } catch (error) {
+            return helper.response(response, 400, "Bad Request", error)
+            // console.log(error)
         }
     },
     postProduct: async (request, response) => {
@@ -63,14 +88,12 @@ module.exports = {
                 id
             } = request.params
             const {
-                product_name,
                 product_price,
                 product_status,
                 category_id
             } = request.body
 
             const setData = {
-                product_name,
                 product_price,
                 product_updated_at: new Date(),
                 product_status,

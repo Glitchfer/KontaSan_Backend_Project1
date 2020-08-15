@@ -18,6 +18,13 @@ module.exports = {
             })
         })
     },
+    getProductByName: (name) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT * FROM product WHERE product_name LIKE "%"?"%"`, name, (error, result) => {
+                !error ? resolve(result) : reject(new Error(error))
+            })
+        })
+    },
     postProduct: (setData) => {
         return new Promise((resolve, reject) => {
             connection.query("INSERT INTO product SET ?", setData, (error, result) => {
@@ -60,7 +67,6 @@ module.exports = {
                     reject(new Error(error))
                 }
             })
-
         })
     }
 }
