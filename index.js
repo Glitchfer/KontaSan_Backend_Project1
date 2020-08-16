@@ -21,7 +21,7 @@ app.use(morgan('dev')); //<-- dev merupakan format yg ada didalam morgan, yang b
 
 // cors setting, untuk membatasi akses kepada orang luar
 app.use((request, response, next) => {
-    response.header("Access-Control-Allow-Origin", "*")
+    response.header("Access-Control-Allow-Origin", "http://127.0.0.1:3001", "http://127.0.0.1:5500")
     response.header("Access-Control-Allow-Headers", "Origin, X-Request-With, Content-Type, Accept, Authorization")
     next()
 })

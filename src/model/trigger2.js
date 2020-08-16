@@ -4,12 +4,31 @@ const {
 } = require('../controller/trigger')
 
 module.exports = {
-    getAllTrigger2: () => {
+    getTrigger2: (limit, offset) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM orders`, (error, result) => {
+            connection.query(`SELECT * FROM orders LIMIT ? OFFSET ?`, [limit, offset], (error, result) => {
                 !error ? resolve(result) : reject(new Error(error))
             })
         })
+    },
+    // Get Trigger Count untuk params invoice dan orders digabung disini
+    getTriggerCount: (par) => {
+        switch (par) {
+            case "orders":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT COUNT(*) as total FROM orders`, (error, result) => {
+                        !error ? resolve(result[0].total) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "invoice":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT COUNT(*) as total FROM invoice`, (error, result) => {
+                        !error ? resolve(result[0].total) : reject(new Error(error))
+                    })
+                })
+                break;
+        }
     },
     getTrigger2ById: (id) => {
         return new Promise((resolve, reject) => {

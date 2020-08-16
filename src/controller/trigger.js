@@ -1,5 +1,5 @@
 const {
-    getAllTrigger1,
+    getTrigger1,
     getTrigger1ById,
     getInvoiceId,
     postTrigger1,
@@ -7,7 +7,8 @@ const {
     deleteTrigger1
 } = require('../model/trigger1')
 const {
-    getAllTrigger2,
+    getTrigger2,
+    getTriggerCount,
     getTrigger2ById,
     getOrderByInvoiceId,
     getProductPriceById,
@@ -15,26 +16,75 @@ const {
     patchTrigger2,
     deleteTrigger2
 } = require('../model/trigger2')
-
+const qs = require('querystring')
 const helper = require('../helper')
 
+const getPrevLink = (page, currentQuery) => {
+    if (page > 1) {
+        const generatedPage = {
+            page: page - 1
+        }
+        const resultPrevLink = {
+            ...currentQuery,
+            ...generatedPage
+        }
+        return qs.stringify(resultPrevLink)
+    } else {
+        return null
+    }
+}
+const getNextLink = (page, totalPage, currentQuery) => {
+    if (page < totalPage) {
+        const generatedPage = {
+            page: page + 1
+        }
+        const resultNextLink = {
+            ...currentQuery,
+            ...generatedPage
+        }
+        return qs.stringify(resultNextLink)
+    } else {
+        return null
+    }
+}
 module.exports = {
     getAllTrigger: async (request, response) => {
+        const {
+            url: url = request.params
+        } = request.params
+        const par = url.params;
+        let {
+            page,
+            limit
+        } = request.query
+        page = parseInt(page)
+        limit = parseInt(limit)
+        const totalData = await getTriggerCount(par)
+        const totalPage = Math.ceil(totalData / limit)
+        const offset = page * limit - limit
+        const prevLink = getPrevLink(page, request.query)
+        const nextLink = getNextLink(page, totalPage, request.query)
+        const pageInfo = {
+            page,
+            totalPage,
+            limit,
+            totalData,
+            prevLink: prevLink && `http://127.0.0.1:3001/trigger/${par}?${prevLink}`,
+            nextLink: nextLink && `http://127.0.0.1:3001/trigger/${par}?${nextLink}`
+        }
         try {
-            const {
-                url: url = request.params
-            } = request.params
-
-            const par = url.params;
-
-            if (par == "invoice") {
-                const result = await getAllTrigger1();
-                return helper.response(response, 200, "Get Success", result)
-            } else if (par == "orders") {
-                const result = await getAllTrigger2();
-                return helper.response(response, 200, "Get Success", result)
+            if (page < 1 || page > totalPage) {
+                return helper.response(response, 404, "Page does not exist")
             } else {
-                return helper.response(response, 400, "Params does not exist")
+                if (par == "invoice") {
+                    const result = await getTrigger1(limit, offset);
+                    return helper.response(response, 200, "Get Success", result, pageInfo)
+                } else if (par == "orders") {
+                    const result = await getTrigger2(limit, offset);
+                    return helper.response(response, 200, "Get Success", result, pageInfo)
+                } else {
+                    return helper.response(response, 404, "Params does not exist")
+                }
             }
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)

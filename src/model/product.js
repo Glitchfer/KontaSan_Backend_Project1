@@ -71,6 +71,59 @@ module.exports = {
             })
         })
     },
+    sortProductByNumTable: (value) => {
+        switch (value) {
+            case "1":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY product_id ASC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "2":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY product_name ASC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "3":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY product_price ASC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "4":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY product_status ASC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "5":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY product_created_at DESC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "6":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY product_updated_at DESC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+            case "7":
+                return new Promise((resolve, reject) => {
+                    connection.query(`SELECT * FROM product ORDER BY category_id ASC`, value, (error, result) => {
+                        !error ? resolve(result) : reject(new Error(error))
+                    })
+                })
+                break;
+        }
+    },
     postProduct: (setData) => {
         return new Promise((resolve, reject) => {
             connection.query("INSERT INTO product SET ?", setData, (error, result) => {

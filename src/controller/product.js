@@ -8,6 +8,7 @@ const {
     sortProductByCategory,
     sortProductByPrice,
     sortProductByRecent,
+    sortProductByNumTable,
     postProduct,
     patchProduct,
     deleteProduct
@@ -66,8 +67,8 @@ module.exports = {
             totalPage,
             limit,
             totalData,
-            prevLink: prevLink && `http://127.0.0.1:3001/tutorial?${prevLink}`,
-            nextLink: nextLink && `http://127.0.0.1:3001/tutorial?${nextLink}`
+            prevLink: prevLink && `http://127.0.0.1:3001/product?${prevLink}`,
+            nextLink: nextLink && `http://127.0.0.1:3001/product?${nextLink}`
         }
         try {
             const result = await getProduct(limit, offset);
@@ -126,25 +127,28 @@ module.exports = {
             const par = request.params.value
             if (par == "name") {
                 const result = await sortProductByName();
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Name Success", result)
             } else if (par === "food") {
                 const result = await sortProductByCategory(1);
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Category of Food Success", result)
             } else if (par === "drink") {
                 const result = await sortProductByCategory(2);
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Category of Beverage Success", result)
             } else if (par === "cake") {
                 const result = await sortProductByCategory(5);
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Category of Dessert Success", result)
             } else if (par === "cheap") {
                 const result = await sortProductByPrice(value);
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Chepest Price Success", result)
             } else if (par === "expensive") {
                 const result = await sortProductByPrice(value);
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Expensive Price Success", result)
             } else if (par === "recent") {
                 const result = await sortProductByRecent();
-                return helper.response(response, 200, "Get Success", result)
+                return helper.response(response, 200, "Sort Product By Recent Update Success", result)
+            } else if (par <= 7) {
+                const result = await sortProductByNumTable(value);
+                return helper.response(response, 200, "Sort Product By The Number of Table Success", result)
             } else {
                 return helper.response(response, 404, "Keyword not available")
             }

@@ -4,9 +4,9 @@ const {
 } = require('../controller/trigger')
 
 module.exports = {
-    getAllTrigger1: () => {
+    getTrigger1: (limit, offset) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM invoice`, (error, result) => {
+            connection.query(`SELECT * FROM invoice LIMIT ? OFFSET ?`, [limit, offset], (error, result) => {
                 !error ? resolve(result) : reject(new Error(error))
             })
         })
