@@ -6,7 +6,9 @@ const {
 module.exports = {
     getProduct: (limit, offset) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM product LIMIT ? OFFSET ?`, [limit, offset], (error, result) => {
+            connection.query(`SELECT product_id, product_name, product_price, product_status, category_name,
+            category_id, product_created_at, product_updated_at FROM product INNER JOIN category USING (category_id)
+            LIMIT ? OFFSET ?`, [limit, offset], (error, result) => {
                 !error ? resolve(result) : reject(new Error(error))
             })
         })

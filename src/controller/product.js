@@ -1,5 +1,6 @@
 const {
     // getAllProduct,
+    join,
     getProduct,
     getProductCount,
     getProductById,
@@ -16,6 +17,9 @@ const {
 } = require('../model/product')
 const qs = require("querystring")
 const helper = require('../helper');
+const {
+    isNumber
+} = require('util');
 // const {
 //     stringify
 // } = require('qs');
@@ -50,6 +54,7 @@ const getnextLink = (page, totalPage, currentQuery) => {
     }
 }
 module.exports = {
+
     getAllProduct: async (request, response) => {
         let {
             page,
@@ -70,101 +75,99 @@ module.exports = {
             prevLink: prevLink && `http://127.0.0.1:3001/product?${prevLink}`,
             nextLink: nextLink && `http://127.0.0.1:3001/product?${nextLink}`
         }
+
         try {
-            const result = await getProduct(limit, offset);
-            return helper.response(response, 200, "Get Success", result, pageInfo)
-        } catch (error) {
-            return helper.response(response, 400, "Bad Request", error)
-            // console.log(result)
-        }
-    },
-    getProductById: async (request, response) => {
-        try {
-            const {
-                id
-            } = request.params
-            const result = await getProductById(id);
-            if (result.length > 0) {
-                return helper.response(response, 200, "Get Product By Id Success", result)
+            if (page < 1 || page > totalPage) {
+                return helper.response(response, 404, "Page does not exist")
             } else {
-                return helper.response(response, 404, `Product By Id: ${id} Not Found`)
+                const result = await getProduct(limit, offset);
+                return helper.response(response, 200, "Get Success", result, pageInfo)
             }
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)
         }
     },
-    getProductByName: async (request, response) => {
+    getProductBy: async (request, response) => {
         try {
             const {
-                name,
-                url: url = request.params
+                id
             } = request.params
-            const par = url.params;
-            if (par == "name") {
+            if (request.params.id > 0) {
+                const result = await getProductById(id);
+                if (result.length > 0) {
+                    return helper.response(response, 200, "Get Product By Id Success", result)
+                } else {
+                    return helper.response(response, 404, `Product By Id: ${id} Not Found`)
+                }
+            } else if (request.params.id === "search") {
+                let {
+                    name
+                } = request.query
+                const srcByName = {
+                    name
+                }
                 const getByName = await getProductByName(name);
                 const result = getByName.map(function (value) {
                     return value
                 })
-                // console.log(getByName)
                 if (result.length > 0) {
                     return helper.response(response, 200, `Get Product By Word: ${name}`, result)
                 } else {
                     return helper.response(response, 404, `${name} Not Found`)
                 }
+            } else if (request.params.id === "sort") {
+                let {
+                    sort_by
+                } = request.query
+                const sortBy = {
+                    sort_by
+                }
+                if (sort_by === "name") {
+                    const result = await sortProductByName();
+                    return helper.response(response, 200, "Sort Product By Name Success", result)
+                } else if (sort_by === "food") {
+                    const result = await sortProductByCategory(1);
+                    return helper.response(response, 200, "Sort Product By Category of Food Success", result)
+                } else if (sort_by === "drink") {
+                    const result = await sortProductByCategory(2);
+                    return helper.response(response, 200, "Sort Product By Category of Beverage Success", result)
+                } else if (sort_by === "cake") {
+                    const result = await sortProductByCategory(5);
+                    return helper.response(response, 200, "Sort Product By Category of Dessert Success", result)
+                } else if (sort_by === "cheap") {
+                    const result = await sortProductByPrice(sort_by);
+                    return helper.response(response, 200, "Sort Product By Chepest Price Success", result)
+                } else if (sort_by === "expensive") {
+                    const result = await sortProductByPrice(sort_by);
+                    return helper.response(response, 200, "Sort Product By Expensive Price Success", result)
+                } else if (sort_by === "recent") {
+                    const result = await sortProductByRecent();
+                    return helper.response(response, 200, "Sort Product By Recent Update Success", result)
+                } else if (sort_by <= 7) {
+                    const result = await sortProductByNumTable(sort_by);
+                    return helper.response(response, 200, "Sort Product By The Number of Table Success", result)
+                } else {
+                    return helper.response(response, 404, "Keyword not available")
+                }
             } else {
-                return helper.response(response, 400, `Params does not exist, only available for params 'name'`)
+                return helper.response(response, 400, `Params does not exist, only available for params 'search' & 'id number'`)
             }
-        } catch (error) {
-            return helper.response(response, 400, "Bad Request", error)
-            // console.log(error)
-        }
-    },
-    sortProductBy: async (request, response) => {
-        try {
-            const {
-                value,
-            } = request.params
-            const par = request.params.value
-            if (par == "name") {
-                const result = await sortProductByName();
-                return helper.response(response, 200, "Sort Product By Name Success", result)
-            } else if (par === "food") {
-                const result = await sortProductByCategory(1);
-                return helper.response(response, 200, "Sort Product By Category of Food Success", result)
-            } else if (par === "drink") {
-                const result = await sortProductByCategory(2);
-                return helper.response(response, 200, "Sort Product By Category of Beverage Success", result)
-            } else if (par === "cake") {
-                const result = await sortProductByCategory(5);
-                return helper.response(response, 200, "Sort Product By Category of Dessert Success", result)
-            } else if (par === "cheap") {
-                const result = await sortProductByPrice(value);
-                return helper.response(response, 200, "Sort Product By Chepest Price Success", result)
-            } else if (par === "expensive") {
-                const result = await sortProductByPrice(value);
-                return helper.response(response, 200, "Sort Product By Expensive Price Success", result)
-            } else if (par === "recent") {
-                const result = await sortProductByRecent();
-                return helper.response(response, 200, "Sort Product By Recent Update Success", result)
-            } else if (par <= 7) {
-                const result = await sortProductByNumTable(value);
-                return helper.response(response, 200, "Sort Product By The Number of Table Success", result)
-            } else {
-                return helper.response(response, 404, "Keyword not available")
-            }
+
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)
         }
     },
     postProduct: async (request, response) => {
         try {
-            const {
+            let {
                 product_name,
                 product_price,
                 product_status,
                 category_id
             } = request.body
-
+            product_price = Number(product_price)
+            product_status = parseInt(product_status)
+            category_id = parseInt(category_id)
             const setData = {
                 product_name,
                 product_price,
@@ -172,12 +175,16 @@ module.exports = {
                 product_status,
                 category_id
             }
-            const checkName = await getProductByName(product_name)
-            if (checkName.length < 1) {
-                const result = await postProduct(setData)
-                return helper.response(response, 200, "Product Created", result)
+            if (product_name === "" || product_name >= 0 || product_price < 1 || Number.isNaN(product_price) || Number.isNaN(product_status) || product_status > 1 || Number.isNaN(category_id)) {
+                return helper.response(response, 400, "Invalid Input, All Of The Data Must Be Filled")
             } else {
-                return helper.response(response, 404, `Same Product Detected, Please Try Again With Other Name`)
+                const checkName = await getProductByName(product_name)
+                if (checkName.length < 1) {
+                    const result = await postProduct(setData)
+                    return helper.response(response, 200, "Product Created", result)
+                } else {
+                    return helper.response(response, 404, `Same Product Detected, Please Try Again With Other Name`)
+                }
             }
         } catch (error) {
             return helper.response(response, 400, "Bad Request", error)

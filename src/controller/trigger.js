@@ -110,7 +110,7 @@ module.exports = {
                 if (result.length > 0) {
                     return helper.response(response, 200, "Get Orders By Id Success", result)
                 } else {
-                    return helper.response(response, 404, `Prders By Id: ${id} Not Found`)
+                    return helper.response(response, 404, `Orders By Id: ${id} Not Found`)
                 }
             } else {
                 return helper.response(response, 400, "Params does not exist")
@@ -134,12 +134,13 @@ module.exports = {
                 const result = await postTrigger1(setData1)
                 return helper.response(response, 200, "Invoice Created", result)
             } else if (par == "orders") {
-                const {
+                let {
                     cashier_name,
                     product_id,
                     item_quantity,
                     invoice_id
                 } = request.body
+                item_quantity = parseInt(item_quantity)
                 const setData2 = {
                     cashier_name,
                     product_id,
@@ -158,11 +159,16 @@ module.exports = {
                     ...setData3
                 }
                 const checkInvoiceId = await getInvoiceId(invoice_id)
-                if (checkInvoiceId.length > 0) {
-                    const result = await postTrigger2(setData4) //*
-                    return helper.response(response, 200, "Orders Created", result)
+                if (cashier_name === "" || cashier_name >= 0 || Number.isNaN(item_quantity) || item_quantity < 1) {
+                    console.log("Invalid Input, All Of The Data Must Be Filled")
+                    return helper.response(response, 400, `Invalid Input, All Of The Data Must Be Filled`)
                 } else {
-                    return helper.response(response, 404, `Orders By Invoice Id: ${invoice_id} Not Found`)
+                    if (checkInvoiceId.length > 0) {
+                        const result = await postTrigger2(setData4) //*
+                        return helper.response(response, 200, "Orders Created", result)
+                    } else {
+                        return helper.response(response, 404, `Orders By Invoice Id: ${invoice_id} Not Found`)
+                    }
                 }
             } else {
                 return helper.response(response, 400, "Params does not exist")

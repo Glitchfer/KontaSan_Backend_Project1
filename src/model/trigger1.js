@@ -6,7 +6,7 @@ const {
 module.exports = {
     getTrigger1: (limit, offset) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM invoice LIMIT ? OFFSET ?`, [limit, offset], (error, result) => {
+            connection.query(`SELECT * FROM invoice INNER JOIN orders USING (invoice_id) LIMIT ? OFFSET ? `, [limit, offset], (error, result) => {
                 !error ? resolve(result) : reject(new Error(error))
             })
         })

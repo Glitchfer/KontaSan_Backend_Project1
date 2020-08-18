@@ -3,9 +3,7 @@ const router = require('express').Router()
 // Import controller
 const {
     getAllProduct,
-    getProductById,
-    getProductByName,
-    sortProductBy,
+    getProductBy,
     postProduct,
     patchProduct,
     deleteProduct
@@ -14,9 +12,7 @@ const {
 // end point
 // GET
 router.get("/", getAllProduct);
-router.get("/:id", getProductById);
-router.get("/:params/:name", getProductByName);
-router.get("/:params/:sort/:value", sortProductBy)
+router.get("/:id", getProductBy);
 
 // POST
 router.post("/", postProduct)
