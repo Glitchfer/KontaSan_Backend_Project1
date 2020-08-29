@@ -58,6 +58,17 @@ module.exports = {
       );
     });
   },
+  getProductByName2: (name) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM product WHERE product_name LIKE "%"?"%"`,
+        name,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
   sortProductByName: (value) => {
     return new Promise((resolve, reject) => {
       connection.query(

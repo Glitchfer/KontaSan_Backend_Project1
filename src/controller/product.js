@@ -4,6 +4,7 @@ const {
   getProduct,
   getProductCount,
   getProductCountByName,
+  getProductByName2,
   getProductById,
   getProductByName,
   sortProductByName,
@@ -258,7 +259,7 @@ module.exports = {
           "Invalid Input, All Of The Data Must Be Filled"
         );
       } else {
-        const checkName = await getProductByName(product_name);
+        const checkName = await getProductByName2(product_name);
         if (checkName.length < 1) {
           const result = await postProduct(setData);
           return helper.response(response, 200, "Product Created", result);
