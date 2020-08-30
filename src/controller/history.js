@@ -43,7 +43,9 @@ module.exports = {
   getRevenue: async (request, response) => {
     try {
       const { revenue } = request.params;
-      const result = await getRevenue();
+      let { select } = request.query;
+      const type = { select };
+      const result = await getRevenue(select);
       return helper.response(response, 200, "Get Revenue Success", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

@@ -24,16 +24,50 @@ module.exports = {
       );
     });
   },
-  getRevenue: () => {
+  getRevenue: (select) => {
     //   THIS END POINT TO GET TOTAL ORDERS
-    return new Promise((resolve, reject) => {
-      connection.query(
-        `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`,
-        (error, result) => {
-          !error ? resolve(result) : reject(new Error(error));
-        }
-      );
-    });
+    switch (select) {
+      case "hours":
+        return new Promise((resolve, reject) => {
+          connection.query(
+            // `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`
+            `SELECT DATE_FORMAT(updated_at, '%d/%m %T') as Date, sub_total as Total FROM invoice`,
+            (error, result) => {
+              !error ? resolve(result) : reject(new Error(error));
+            }
+          );
+        });
+        break;
+      case "year":
+        return new Promise((resolve, reject) => {
+          connection.query(
+            `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`,
+            (error, result) => {
+              !error ? resolve(result) : reject(new Error(error));
+            }
+          );
+        });
+        break;
+      case "lastYear":
+        return new Promise((resolve, reject) => {
+          connection.query(
+            `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice WHERE updated_at < 01-01-2020`,
+            (error, result) => {
+              !error ? resolve(result) : reject(new Error(error));
+            }
+          );
+        });
+        break;
+    }
+    // return new Promise((resolve, reject) => {
+    //   connection.query(
+    //     // `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`
+    //     `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y %T') as Date, sub_total as Total FROM invoice`,
+    //     (error, result) => {
+    //       !error ? resolve(result) : reject(new Error(error));
+    //     }
+    //   );
+    // });
   },
   postHistory: () => {
     //   THIS END POINT TO GET THIS YEARS INCOME
