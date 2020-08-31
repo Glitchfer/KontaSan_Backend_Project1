@@ -278,9 +278,16 @@ module.exports = {
   patchProduct: async (request, response) => {
     try {
       const { id } = request.params;
-      const { product_price, product_status, category_id, img } = request.body;
+      const {
+        product_name,
+        product_price,
+        product_status,
+        category_id,
+        img,
+      } = request.body;
 
       const setData = {
+        product_name,
         product_price,
         product_updated_at: new Date(),
         product_status,
