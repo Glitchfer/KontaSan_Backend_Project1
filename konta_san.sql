@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 31 Agu 2020 pada 11.21
+-- Waktu pembuatan: 01 Sep 2020 pada 04.02
 -- Versi server: 10.4.13-MariaDB
 -- Versi PHP: 7.4.8
 
@@ -64,6 +64,18 @@ INSERT INTO `history` (`history_id`, `date`, `invoice_number`, `revenue`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `income`
+--
+
+CREATE TABLE `income` (
+  `income_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `invoice`
 --
 
@@ -98,7 +110,8 @@ INSERT INTO `invoice` (`invoice_id`, `invoice_number`, `total_price`, `tax`, `su
 (138, 53310, 30000, 3000, 33000, '2020-08-31 12:11:12', '2020-08-31 12:11:40'),
 (139, 93160, 120000, 12000, 132000, '2020-08-31 13:12:48', '2020-08-31 13:17:51'),
 (140, 25378, 961665, 96167, 1057832, '2020-08-31 14:03:28', '2020-08-31 14:25:43'),
-(141, 24327, 137000, 13700, 150700, '2020-08-31 16:09:18', '2020-08-31 16:14:14');
+(141, 24327, 137000, 13700, 150700, '2020-08-31 16:09:18', '2020-08-31 16:14:14'),
+(142, 37384, 66000, 6600, 72600, '2020-09-01 00:09:59', '2020-09-01 00:10:12');
 
 -- --------------------------------------------------------
 
@@ -181,7 +194,8 @@ INSERT INTO `orders` (`orders_id`, `cashier_name`, `product_id`, `item_quantity`
 (246, 'Maria', 9, 1, 30000, 'CASH', 141, '2020-08-31 16:13:33'),
 (247, 'Maria', 3, 1, 6000, 'CASH', 141, '2020-08-31 16:13:33'),
 (248, 'Maria', 2, 1, 15000, 'CASH', 141, '2020-08-31 16:13:35'),
-(249, 'Maria', 7, 1, 28000, 'CASH', 141, '2020-08-31 16:14:13');
+(249, 'Maria', 7, 1, 28000, 'CASH', 141, '2020-08-31 16:14:13'),
+(250, 'Yuji', 6, 2, 66000, 'CASH', 142, '2020-09-01 00:10:11');
 
 -- --------------------------------------------------------
 
@@ -214,10 +228,10 @@ INSERT INTO `product` (`product_id`, `product_name`, `product_price`, `product_s
 (9, 'Chicken Katsu Dabu-dabu', 30000, 1, '2020-08-15 11:11:55', '0000-00-00 00:00:00', 1, 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80'),
 (10, 'Salmon Truffle Teriyaki', 60000, 1, '2020-08-15 11:12:28', '0000-00-00 00:00:00', 1, 'https://images.unsplash.com/photo-1560717845-968823efbee1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'),
 (11, 'Wiener Schnitzel', 69000, 1, '2020-08-15 11:13:04', '0000-00-00 00:00:00', 1, 'https://images.unsplash.com/photo-1560611588-163f295eb145?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'),
-(13, 'Twister Metal Pancake', 17500, 0, '2020-08-15 20:41:54', '2020-08-30 16:37:26', 1, 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=925&q=80'),
+(13, 'Twister Metal Pancake', 24500, 1, '2020-08-15 20:41:54', '2020-08-31 21:31:33', 1, 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=925&q=80'),
 (25, 'Mineral Water', 3500, 1, '2020-08-18 15:31:54', '2020-08-30 16:39:59', 2, 'https://static.republika.co.id/uploads/images/inpicture_slide/air-mineral-kemasan-aqua-_180222205334-669.jpg'),
 (43, 'Omlete', 15000, 1, '2020-08-28 14:16:48', '2020-08-30 16:43:28', 1, 'https://img.qraved.co/v2/journal/wp-content/uploads/2015/03/Creamy-Salmon-Omurice-Half-Cooked_02-600x400-l.jpg'),
-(45, 'Balck Burger', 28000, 1, '2020-08-29 18:15:03', '2020-08-30 16:34:36', 1, 'https://images.unsplash.com/photo-1536748240857-8179775c9a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80');
+(45, 'Black burger', 27800, 1, '2020-08-29 18:15:03', '2020-08-31 21:21:01', 1, 'https://images.unsplash.com/photo-1536748240857-8179775c9a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80');
 
 --
 -- Indexes for dumped tables
@@ -234,6 +248,12 @@ ALTER TABLE `category`
 --
 ALTER TABLE `history`
   ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indeks untuk tabel `income`
+--
+ALTER TABLE `income`
+  ADD PRIMARY KEY (`income_id`);
 
 --
 -- Indeks untuk tabel `invoice`
@@ -270,22 +290,28 @@ ALTER TABLE `history`
   MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT untuk tabel `income`
+--
+ALTER TABLE `income`
+  MODIFY `income_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT untuk tabel `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `invoice_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 
 --
 -- AUTO_INCREMENT untuk tabel `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
+  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- AUTO_INCREMENT untuk tabel `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -10,6 +10,7 @@ const history = require("./routes/history");
 const trigger = require("./routes/trigger");
 const tutorial = require("./routes/tutorial");
 const income = require("./routes/income");
+const users = require("./routes/users");
 
 // buat middle disini
 routes.use("/product", product);
@@ -20,5 +21,6 @@ routes.use("/history", history);
 routes.use("/trigger", trigger);
 routes.use("/tutorial", tutorial);
 routes.use("/income", income);
+routes.use("/users", users);
 
 module.exports = routes;
