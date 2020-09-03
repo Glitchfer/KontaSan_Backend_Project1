@@ -3,7 +3,6 @@ const router = require("express").Router();
 // Import controller
 const { registerUser, loginUser } = require("../controller/users");
 
-// end point <--- untuk meng get data dari database
 // GET
 // router.get("/", getUsers);
 router.get("/login", loginUser);

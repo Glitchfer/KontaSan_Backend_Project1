@@ -21,7 +21,7 @@ app.use(
 
 // Morgan setting
 app.use(morgan("dev")); //<-- dev merupakan format yg ada didalam morgan, yang berfungsi untuk menampilkan akses dari user
-
+app.use(express.static("uploads"));
 // cors setting, untuk membatasi akses kepada orang luar
 app.use((request, response, next) => {
   response.header(

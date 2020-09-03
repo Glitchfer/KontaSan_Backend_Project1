@@ -7,15 +7,16 @@ const {
   thisYearIncome,
   postIncome,
 } = require("../controller/income");
+const { authorization, authorization2 } = require("../middleware/auth");
 
 // end point <--- untuk meng get data dari database
 // GET
-router.get("/", todayIncome);
-router.get("/orders", weeklyOrders);
+router.get("/", authorization, todayIncome);
+router.get("/orders", authorization, weeklyOrders);
 
 // POST
-router.post("/income", thisYearIncome);
-router.post("/", postIncome);
+router.post("/income", authorization, thisYearIncome);
+router.post("/", authorization2, postIncome);
 
 // Export router
 

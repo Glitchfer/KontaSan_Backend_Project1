@@ -119,7 +119,7 @@ module.exports = {
           return helper.response(
             response,
             200,
-            "Get Orders By Id Success",
+            "Get Orders By Invoice Id Success",
             result
           );
         } else {
@@ -271,7 +271,7 @@ module.exports = {
           return helper.response(
             response,
             404,
-            `Invoice By Id: ${id} Not Found`
+            `Invoice or Orders By invoice Id: ${id} Not Found`
           );
         }
       } else if (par == "orders") {

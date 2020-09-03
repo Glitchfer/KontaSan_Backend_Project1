@@ -9,21 +9,22 @@ const {
   patchHistory,
   deleteHistory,
 } = require("../controller/history");
+const { authorization } = require("../middleware/auth");
 
 // end point <--- untuk meng get data dari database
 // GET
-router.get("/", getAllHistory);
-router.get("/orders", getHistoryById);
+router.get("/", authorization, getAllHistory);
+router.get("/orders", authorization, getHistoryById);
 
 // POST
-router.post("/", postHistory);
-router.post("/revenue", getRevenue);
+router.post("/", authorization, postHistory);
+router.post("/revenue", authorization, getRevenue);
 
 // PATCH/PUT (untuk meng update)
-router.patch("/:id", patchHistory);
+// router.patch("/:id", authorization, patchHistory);
 
 // DELETE
-router.delete("/:id", deleteHistory);
+// router.delete("/:id", authorization, deleteHistory);
 
 // Export router
 

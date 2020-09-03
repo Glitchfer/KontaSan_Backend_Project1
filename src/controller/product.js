@@ -19,10 +19,10 @@ const {
 } = require("../model/product");
 const qs = require("querystring");
 const helper = require("../helper");
+const redis = require("redis");
+const client = redis.createClient();
 const { isNumber } = require("util");
-// const {
-//     stringify
-// } = require('qs');
+
 const getPrevLink = (page, currentQuery) => {
   if (page > 1) {
     const generatePage = {
@@ -74,6 +74,9 @@ module.exports = {
         return helper.response(response, 404, "Page does not exist");
       } else {
         const result = await getProduct(limit, offset);
+        // console.log(JSON.stringify(request.query));
+        // console.log(request.query);
+        // client.set(`getproduct:${JSON.stringify(request.query)}`, JSON.stringify(result));
         return helper.response(response, 200, "Get Success", result, pageInfo);
       }
     } catch (error) {
@@ -85,6 +88,7 @@ module.exports = {
       const { id } = request.params;
       if (request.params.id > 0) {
         const result = await getProductById(id);
+        client.setex(`getproductbyid:${id}`, 120, JSON.stringify(result));
         if (result.length > 0) {
           return helper.response(
             response,
@@ -242,7 +246,7 @@ module.exports = {
         product_created_at: new Date(),
         product_status,
         category_id,
-        img,
+        img: request.file === undefined ? "#" : request.file.filename,
       };
       if (
         product_name === "" ||
@@ -292,7 +296,7 @@ module.exports = {
         product_updated_at: new Date(),
         product_status,
         category_id,
-        img,
+        img: request.file === undefined ? "#" : request.file.filename,
       };
       const checkId = await getProductById(id);
       if (checkId.length > 0) {

@@ -41,6 +41,7 @@ module.exports = {
   getTrigger2ById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
+        // note: ganti jadi WHERE orders_id = ?
         "SELECT * FROM orders WHERE invoice_id = ?",
         id,
         (error, result) => {
@@ -124,6 +125,17 @@ module.exports = {
           } else {
             reject(new Error(error));
           }
+        }
+      );
+    });
+  },
+  getOrdersAll: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM orders WHERE order_id = ?",
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
         }
       );
     });
