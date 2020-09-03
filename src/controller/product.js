@@ -22,6 +22,7 @@ const helper = require("../helper");
 const redis = require("redis");
 const client = redis.createClient();
 const { isNumber } = require("util");
+let fs = require("fs");
 
 const getPrevLink = (page, currentQuery) => {
   if (page > 1) {
@@ -74,9 +75,13 @@ module.exports = {
         return helper.response(response, 404, "Page does not exist");
       } else {
         const result = await getProduct(limit, offset);
+        // client.setex(`getallproduct`, 120, JSON.stringify(result));
         // console.log(JSON.stringify(request.query));
         // console.log(request.query);
-        // client.set(`getproduct:${JSON.stringify(request.query)}`, JSON.stringify(result));
+        // client.set(
+        //   `getallproduct:${JSON.stringify(request.query)}`,
+        //   JSON.stringify(result)
+        // );
         return helper.response(response, 200, "Get Success", result, pageInfo);
       }
     } catch (error) {
@@ -88,8 +93,12 @@ module.exports = {
       const { id } = request.params;
       if (request.params.id > 0) {
         const result = await getProductById(id);
-        client.setex(`getproductbyid:${id}`, 120, JSON.stringify(result));
         if (result.length > 0) {
+          client.setex(
+            `getproductbyid:${id}`,
+            120 /*storage time limit*/,
+            JSON.stringify(result)
+          );
           return helper.response(
             response,
             200,
@@ -134,6 +143,7 @@ module.exports = {
           return helper.response(response, 404, "Page does not exist");
         } else {
           if (result.length > 0) {
+            client.setex(`searchby:${name}`, 120, JSON.stringify(result));
             return helper.response(
               response,
               200,
@@ -152,6 +162,7 @@ module.exports = {
         };
         if (sort_by === "name") {
           const result = await sortProductByName();
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -160,6 +171,7 @@ module.exports = {
           );
         } else if (sort_by === "food") {
           const result = await sortProductByCategory(1);
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -168,6 +180,7 @@ module.exports = {
           );
         } else if (sort_by === "drink") {
           const result = await sortProductByCategory(2);
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -176,6 +189,7 @@ module.exports = {
           );
         } else if (sort_by === "cake") {
           const result = await sortProductByCategory(5);
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -184,6 +198,7 @@ module.exports = {
           );
         } else if (sort_by === "cheap") {
           const result = await sortProductByPrice(sort_by);
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -192,6 +207,7 @@ module.exports = {
           );
         } else if (sort_by === "expensive") {
           const result = await sortProductByPrice(sort_by);
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -200,6 +216,7 @@ module.exports = {
           );
         } else if (sort_by === "recent") {
           const result = await sortProductByRecent();
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -208,6 +225,7 @@ module.exports = {
           );
         } else if (sort_by <= 7) {
           const result = await sortProductByNumTable(sort_by);
+          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -299,11 +317,33 @@ module.exports = {
         img: request.file === undefined ? "#" : request.file.filename,
       };
       const checkId = await getProductById(id);
-      if (checkId.length > 0) {
-        const result = await patchProduct(setData, id);
-        return helper.response(response, 201, "Product Updated", result);
+      if (checkId[0].img !== "#") {
+        fs.unlink(`./uploads/${checkId[0].img}`, function (err) {
+          if (err) throw err;
+          // if no error, file has been deleted successfully
+          console.log("File img deleted! ready to patch");
+        });
+        if (checkId.length > 0) {
+          const result = await patchProduct(setData, id);
+          return helper.response(response, 201, "Product Updated", result);
+        } else {
+          return helper.response(
+            response,
+            404,
+            `Product By Id: ${id} Not Found`
+          );
+        }
       } else {
-        return helper.response(response, 404, `Product By Id: ${id} Not Found`);
+        if (checkId.length > 0) {
+          const result = await patchProduct(setData, id);
+          return helper.response(response, 201, "Product Updated", result);
+        } else {
+          return helper.response(
+            response,
+            404,
+            `Product By Id: ${id} Not Found`
+          );
+        }
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -313,10 +353,21 @@ module.exports = {
     try {
       const { id } = request.params;
       const checkId = await getProductById(id);
-
+      // console.log("chek id ni");
+      // console.log(checkId[0].img);
       if (checkId.length > 0) {
-        const result = await deleteProduct(id);
-        return helper.response(response, 201, "Product Deleted", result);
+        if (checkId[0].img !== "#") {
+          fs.unlink(`./uploads/${checkId[0].img}`, function (err) {
+            if (err) throw err;
+            // if no error, file has been deleted successfully
+            console.log("File img deleted! Yeay");
+          });
+          const result = await deleteProduct(id);
+          return helper.response(response, 201, "Product Deleted", result);
+        } else {
+          const result = await deleteProduct(id);
+          return helper.response(response, 201, "Product Deleted", result);
+        }
       } else {
         return helper.response(response, 404, `Product By Id: ${id} Not Found`);
       }

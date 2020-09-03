@@ -11,16 +11,35 @@ const {
 const { authorization, authorization2 } = require("../middleware/auth");
 const {
   getProductByIdRedis,
-  // getProductRedis,
+  getAllProductRedis,
+  searchProductRedis,
+  sortProductByRedis,
   clearDataProductRedis,
 } = require("../middleware/redis");
 const multer = require("multer");
 
+// const storage = multer.diskStorage({
+//   destination: (request, file, callback) => {
+//     callback(null, "./uploads/");
+//   },
+//   filename: (request, file, callback) => {
+//     console.log(file);
+//     callback(
+//       null,
+//       new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+//     );
+//   },
+// });
 const storage = multer.diskStorage({
-  destination: (request, file, callback) => {
-    callback(null, "./uploads/");
+  destination: function (request, file, callback) {
+    console.log(file.mimetype);
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+      callback(null, "./uploads/");
+    } else {
+      return callback("Invalid image format, only jpeg / png are allowed");
+    }
   },
-  filename: (request, file, callback) => {
+  filename: function (request, file, callback) {
     console.log(file);
     callback(
       null,
@@ -29,12 +48,22 @@ const storage = multer.diskStorage({
   },
 });
 
-let upload = multer({ storage: storage });
+let upload = multer({
+  storage: storage,
+  limits: { fileSize: 1 * 1024 * 1024 },
+});
 
 // end point
 // GET
-router.get("/", authorization, /*tambahkan redis*/ getAllProduct);
-router.get("/:id", authorization, getProductByIdRedis, getProductBy);
+router.get("/", authorization, getAllProductRedis, getAllProduct);
+router.get(
+  "/:id",
+  authorization,
+  getProductByIdRedis,
+  searchProductRedis,
+  sortProductByRedis,
+  getProductBy
+);
 
 // POST
 router.post("/", authorization2, upload.single("img"), postProduct);
