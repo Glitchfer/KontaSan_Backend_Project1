@@ -6,13 +6,15 @@ const {
   patchCategory,
   deleteCategory,
 } = require("../model/category");
-
+const redis = require("redis");
+const client = redis.createClient();
 const helper = require("../helper");
 
 module.exports = {
   getAllCategory: async (request, response) => {
     try {
       const result = await getAllCategory();
+      client.setex("categorygetall", 120, JSON.stringify(result));
       return helper.response(response, 200, "Get Success", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
@@ -22,6 +24,7 @@ module.exports = {
     try {
       const { id } = request.params;
       const result = await getCategoryById(id);
+      client.setex(`categoryby:${id}`, 120, JSON.stringify(result));
       if (result.length > 0) {
         return helper.response(
           response,
@@ -44,6 +47,7 @@ module.exports = {
     try {
       const { product } = request.params;
       const result = await getProduct();
+      client.setex(`categoryproduct`, 120, JSON.stringify(result));
       return helper.response(response, 200, "Get Product Success", result);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

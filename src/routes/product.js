@@ -16,42 +16,7 @@ const {
   sortProductByRedis,
   clearDataProductRedis,
 } = require("../middleware/redis");
-const multer = require("multer");
-
-// const storage = multer.diskStorage({
-//   destination: (request, file, callback) => {
-//     callback(null, "./uploads/");
-//   },
-//   filename: (request, file, callback) => {
-//     console.log(file);
-//     callback(
-//       null,
-//       new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
-//     );
-//   },
-// });
-const storage = multer.diskStorage({
-  destination: function (request, file, callback) {
-    console.log(file.mimetype);
-    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-      callback(null, "./uploads/");
-    } else {
-      return callback("Invalid image format, only jpeg / png are allowed");
-    }
-  },
-  filename: function (request, file, callback) {
-    console.log(file);
-    callback(
-      null,
-      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
-    );
-  },
-});
-
-let upload = multer({
-  storage: storage,
-  limits: { fileSize: 1 * 1024 * 1024 },
-});
+const uploadFilter = require("../middleware/multer");
 
 // end point
 // GET
@@ -66,14 +31,20 @@ router.get(
 );
 
 // POST
-router.post("/", authorization2, upload.single("img"), postProduct);
+router.post(
+  "/",
+  authorization2,
+  uploadFilter,
+  clearDataProductRedis,
+  postProduct
+);
 
 // PATCH/PUT (untuk meng update)
 router.patch(
   "/:id",
   authorization2,
   clearDataProductRedis,
-  upload.single("img"),
+  uploadFilter,
   patchProduct
 );
 

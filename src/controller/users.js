@@ -1,15 +1,18 @@
 const {
-  // getUsers,
+  // getAllUsers,
   registerUser,
   checkUser,
   checkUserName,
+  updateUser,
+  getUserById,
+  deleteUser,
 } = require("../model/users");
 
 const helper = require("../helper");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 module.exports = {
-  // getUsers: async (request, response) => {
+  // getAllUsers: async (request, response) => {
   //     try {
   //         const result = await getUsers();
   //         return helper.response(response, 200, "Get Success", result);
@@ -20,10 +23,16 @@ module.exports = {
   registerUser: async (request, response) => {
     const { register } = request.params;
     const { user_email, user_password, user_role, user_name } = request.body;
+    const requirement = (user_password) => {
+      let decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+      if (user_password.match(decimal)) {
+        return true;
+      } else {
+        return false;
+      }
+    };
     const salt = bcrypt.genSaltSync(10);
     const encryptPassword = bcrypt.hashSync(user_password, salt);
-    //   console.log("user password = " + user_password);
-    //   console.log("user password bcrypt= " + encryptPassword);
     const setData = {
       user_email,
       user_password: encryptPassword,
@@ -44,11 +53,11 @@ module.exports = {
           "Invalid Input, All Of The Data Must Be Filled"
         );
       } else {
-        if (user_password.length < 8) {
+        if (requirement(user_password) === false) {
           return helper.response(
             response,
             400,
-            `Password must be at least has minimum 8 character length`
+            `Password must be at least has minimum 8 character length, with one lowercase, one uppercase, one number and one special character`
           );
         } else {
           const checkName = await checkUserName(user_name);
@@ -70,7 +79,7 @@ module.exports = {
         }
       }
     } catch (error) {
-      // return helper.response(response, 400, "Bad Request", error);
+      return helper.response(response, 400, "Bad Request", error);
       console.log(error);
     }
   },
@@ -113,6 +122,50 @@ module.exports = {
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  updateUser: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { user_password, user_status } = request.body;
+      // const salt = bcrypt.genSaltSync(10);
+      // const encryptPassword = bcrypt.hashSync(user_password, salt);
+      // const checkId = await getUserById(id);
+      // console.log(checkId[0].user_password);
+      // console.log(user_password.length);
+      // const setData = {
+      //   user_password,
+      //   user_status,
+      //   user_updated_at: new Date(),
+      // };
+      console.log(id);
+      // if (checkId.length > 0) {
+      //   const result = await updateUser(setData, id);
+      //   return helper.response(response, 201, "User Updated", result);
+      // } else {
+      //   return helper.response(response, 404, `User By Id: ${id} Not Found`);
+      // }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  deleteUser: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const checkId = await getUserById(id);
+
+      if (checkId.length > 0) {
+        const result = await deleteUser(id);
+        return helper.response(response, 201, "Category Deleted", result);
+      } else {
+        return helper.response(
+          response,
+          404,
+          `Category By Id: ${id} Not Found`
+        );
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", result);
     }
   },
 };

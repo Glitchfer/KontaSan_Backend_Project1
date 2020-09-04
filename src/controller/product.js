@@ -75,13 +75,11 @@ module.exports = {
         return helper.response(response, 404, "Page does not exist");
       } else {
         const result = await getProduct(limit, offset);
-        // client.setex(`getallproduct`, 120, JSON.stringify(result));
-        // console.log(JSON.stringify(request.query));
-        // console.log(request.query);
-        // client.set(
-        //   `getallproduct:${JSON.stringify(request.query)}`,
-        //   JSON.stringify(result)
-        // );
+        client.setex(
+          `productwithpage:${page}:${limit}`,
+          120,
+          JSON.stringify(result)
+        );
         return helper.response(response, 200, "Get Success", result, pageInfo);
       }
     } catch (error) {
@@ -94,11 +92,7 @@ module.exports = {
       if (request.params.id > 0) {
         const result = await getProductById(id);
         if (result.length > 0) {
-          client.setex(
-            `getproductbyid:${id}`,
-            120 /*storage time limit*/,
-            JSON.stringify(result)
-          );
+          client.setex(`productbyid:${id}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -143,7 +137,11 @@ module.exports = {
           return helper.response(response, 404, "Page does not exist");
         } else {
           if (result.length > 0) {
-            client.setex(`searchby:${name}`, 120, JSON.stringify(result));
+            client.setex(
+              `productsearchby:${name}:${page}:${limit}`,
+              120,
+              JSON.stringify(result)
+            );
             return helper.response(
               response,
               200,
@@ -162,7 +160,7 @@ module.exports = {
         };
         if (sort_by === "name") {
           const result = await sortProductByName();
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -171,7 +169,7 @@ module.exports = {
           );
         } else if (sort_by === "food") {
           const result = await sortProductByCategory(1);
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -180,7 +178,7 @@ module.exports = {
           );
         } else if (sort_by === "drink") {
           const result = await sortProductByCategory(2);
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -189,7 +187,7 @@ module.exports = {
           );
         } else if (sort_by === "cake") {
           const result = await sortProductByCategory(5);
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -198,7 +196,7 @@ module.exports = {
           );
         } else if (sort_by === "cheap") {
           const result = await sortProductByPrice(sort_by);
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -207,7 +205,7 @@ module.exports = {
           );
         } else if (sort_by === "expensive") {
           const result = await sortProductByPrice(sort_by);
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -216,7 +214,7 @@ module.exports = {
           );
         } else if (sort_by === "recent") {
           const result = await sortProductByRecent();
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -225,7 +223,7 @@ module.exports = {
           );
         } else if (sort_by <= 7) {
           const result = await sortProductByNumTable(sort_by);
-          client.setex(`sortby:${sort_by}`, 120, JSON.stringify(result));
+          client.setex(`productsortby:${sort_by}`, 120, JSON.stringify(result));
           return helper.response(
             response,
             200,
@@ -353,8 +351,6 @@ module.exports = {
     try {
       const { id } = request.params;
       const checkId = await getProductById(id);
-      // console.log("chek id ni");
-      // console.log(checkId[0].img);
       if (checkId.length > 0) {
         if (checkId[0].img !== "#") {
           fs.unlink(`./uploads/${checkId[0].img}`, function (err) {

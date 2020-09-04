@@ -9,20 +9,49 @@ const {
   deleteTrigger,
 } = require("../controller/trigger");
 const { authorization, authorization2 } = require("../middleware/auth");
+const {
+  getInvoiceRedis,
+  getOrderRedis,
+  getInvoiceByIdRedis,
+  getOrderByInvoiceIdRedis,
+  clearDataTriggerRedis,
+} = require("../middleware/redis");
 
 // end point <--- untuk meng get data dari database
 // GET
-router.get("/:params", authorization, getAllTrigger);
-router.get("/:params/:id", authorization, getTriggerById);
+router.get(
+  "/:params",
+  authorization,
+  getInvoiceRedis,
+  getOrderRedis,
+  getAllTrigger
+);
+router.get(
+  "/:params/:id",
+  authorization,
+  getInvoiceByIdRedis,
+  getOrderByInvoiceIdRedis,
+  getTriggerById
+);
 
 // // POST
-router.post("/:params", authorization, postTrigger);
+router.post("/:params", authorization, clearDataTriggerRedis, postTrigger);
 
 // // PATCH/PUT (untuk meng update)
-router.patch("/:params/:id", authorization, patchTrigger);
+router.patch(
+  "/:params/:id",
+  authorization,
+  clearDataTriggerRedis,
+  patchTrigger
+);
 
 // // DELETE
-router.delete("/:params/:id", authorization2, deleteTrigger);
+router.delete(
+  "/:params/:id",
+  authorization2,
+  clearDataTriggerRedis,
+  deleteTrigger
+);
 
 // Export router
 

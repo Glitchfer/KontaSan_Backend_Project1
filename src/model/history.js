@@ -59,15 +59,6 @@ module.exports = {
         });
         break;
     }
-    // return new Promise((resolve, reject) => {
-    //   connection.query(
-    //     // `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`
-    //     `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y %T') as Date, sub_total as Total FROM invoice`,
-    //     (error, result) => {
-    //       !error ? resolve(result) : reject(new Error(error));
-    //     }
-    //   );
-    // });
   },
   postHistory: () => {
     //   THIS END POINT TO GET THIS YEARS INCOME

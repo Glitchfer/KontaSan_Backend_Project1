@@ -17,6 +17,8 @@ const {
   deleteTrigger2,
 } = require("../model/trigger2");
 const qs = require("querystring");
+const redis = require("redis");
+const client = redis.createClient();
 const helper = require("../helper");
 
 const getPrevLink = (page, currentQuery) => {
@@ -74,9 +76,19 @@ module.exports = {
       } else {
         if (par == "invoice") {
           const result = await getTrigger1(calendar);
+          client.setex(
+            `trigger${par}calendar:${calendar}`,
+            120,
+            JSON.stringify(result)
+          );
           return helper.response(response, 200, "Get Success", result);
         } else if (par == "orders") {
           const result = await getTrigger2(limit, offset);
+          client.setex(
+            `trigger${par}:${page}:${limit}`,
+            120,
+            JSON.stringify(result)
+          );
           return helper.response(
             response,
             200,
@@ -96,9 +108,9 @@ module.exports = {
     try {
       const { url: url = request.params, id } = request.params;
       const par = url.params;
-
       if (par == "invoice") {
         const result = await getTrigger1ById(id);
+        client.setex(`trigger${par}id:${id}`, 120, JSON.stringify(result));
         if (result.length > 0) {
           return helper.response(
             response,
@@ -115,6 +127,11 @@ module.exports = {
         }
       } else if (par == "orders") {
         const result = await getOrderByInvoiceId(id);
+        client.setex(
+          `trigger${par}invoiceid:${id}`,
+          120,
+          JSON.stringify(result)
+        );
         if (result.length > 0) {
           return helper.response(
             response,

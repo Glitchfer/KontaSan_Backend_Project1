@@ -6,19 +6,25 @@ const {
   getHistoryById,
   postHistory,
   getRevenue,
-  patchHistory,
-  deleteHistory,
+  // patchHistory,
+  // deleteHistory,
 } = require("../controller/history");
 const { authorization } = require("../middleware/auth");
+const {
+  getTodayIncomeRedis,
+  getTotalOrdersRedis,
+  getThisYearIncomeRedis,
+  getRevenueRedis,
+} = require("../middleware/redis");
 
 // end point <--- untuk meng get data dari database
 // GET
-router.get("/", authorization, getAllHistory);
-router.get("/orders", authorization, getHistoryById);
+router.get("/", authorization, getTodayIncomeRedis, getAllHistory);
+router.get("/orders", authorization, getTotalOrdersRedis, getHistoryById);
 
 // POST
-router.post("/", authorization, postHistory);
-router.post("/revenue", authorization, getRevenue);
+router.post("/", authorization, getThisYearIncomeRedis, postHistory);
+router.post("/revenue", authorization, getRevenueRedis, getRevenue);
 
 // PATCH/PUT (untuk meng update)
 // router.patch("/:id", authorization, patchHistory);
