@@ -2,16 +2,26 @@ const connection = require("../config/mysql");
 const { registerUser } = require("../controller/users");
 
 module.exports = {
-  //   getUsers: () => {
-  //     return new Promise((resolve, reject) => {
-  //       connection.query(
-  //         `SELECT sum(invoice.sub_total) as sub_total, COUNT(*) as total_order, DATE_FORMAT(CURRENT_DATE - 1, '%d-%m-%Y') as yesterday FROM invoice WHERE DATE(updated_at) = DATE(NOW())- 1`,
-  //         (error, result) => {
-  //           !error ? resolve(result) : reject(new Error(error));
-  //         }
-  //       );
-  //     });
-  //   },
+  postLogin: (setData) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "INSERT INTO activity SET ?",
+        setData,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              id: result.insertId,
+              ...setData,
+            };
+            delete newResult.user_password;
+            resolve(newResult);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
   registerUser: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query("INSERT INTO user SET ?", setData, (error, result) => {
@@ -50,25 +60,6 @@ module.exports = {
       );
     });
   },
-  updateUser: (setData, id) => {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        "UPDATE user SET ? WHERE user_id = ?",
-        [setData, id],
-        (error, result) => {
-          if (!error) {
-            const newResult = {
-              category_id: id,
-              ...setData,
-            };
-            resolve(newResult);
-          } else {
-            reject(new Error(error));
-          }
-        }
-      );
-    });
-  },
   getUserById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -80,15 +71,54 @@ module.exports = {
       );
     });
   },
-  deleteUser: (id) => {
+  patchUser: (setData, id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "DELETE FROM user WHERE user_id = ?",
-        id,
+        "UPDATE user SET ? WHERE user_id = ?",
+        [setData, id],
         (error, result) => {
           if (!error) {
             const newResult = {
-              id: id,
+              user_id: id,
+              ...setData,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
+  patchLogout: (setData, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE activity SET ? WHERE activity_id = ?",
+        [setData, id],
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              activity_id: id,
+              ...setData,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
+  deleteUser: (setData, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE user SET ? WHERE user_id = ?",
+        [setData, id],
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              user_id: id,
+              ...setData,
             };
             resolve(newResult);
           } else {

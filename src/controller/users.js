@@ -1,16 +1,17 @@
 const {
-  // getAllUsers,
+  postLogin,
+  patchLogout,
   registerUser,
   checkUser,
   checkUserName,
-  updateUser,
   getUserById,
+  patchUser,
   deleteUser,
 } = require("../model/users");
-
-const helper = require("../helper");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const helper = require("../helper");
+
 module.exports = {
   // getAllUsers: async (request, response) => {
   //     try {
@@ -38,7 +39,7 @@ module.exports = {
       user_password: encryptPassword,
       user_name,
       user_role: user_role === "#admin" ? 1 : 2,
-      user_status: 0,
+      user_status: user_role === "#admin" ? 1 : 0,
       user_created_at: new Date(),
     };
     try {
@@ -113,6 +114,15 @@ module.exports = {
           const token = jwt.sign(payload, "RAHASIA", { expiresIn: "1h" });
           payload = { ...payload, token };
           console.log(payload);
+
+          const loginInfo = {
+            user_id: checkDataUsers[0].user_id,
+            name: checkDataUsers[0].user_name,
+            role: checkDataUsers[0].user_role,
+            login: new Date(),
+          };
+          const result = await postLogin(loginInfo);
+          console.log(result);
           return helper.response(response, 200, "Login success", payload);
         } else {
           return helper.response(response, 400, "Invalid password");
@@ -124,48 +134,107 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
-  updateUser: async (request, response) => {
+  patchLogout: async (request, response) => {
+    let { activity_id, user_id } = request.query;
+    const setData = {
+      logout: new Date(),
+    };
+    const checkId = await getUserById(user_id);
+    console.log(checkId);
+    try {
+      if (checkId.length > 0) {
+        const result = await patchLogout(setData, activity_id);
+        return helper.response(response, 201, "Logout Success", result);
+      } else {
+        return helper.response(
+          response,
+          404,
+          `User By Id: ${user_id} Not Found`
+        );
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+      console.log(error);
+    }
+  },
+  patchUser: async (request, response) => {
     try {
       const { id } = request.params;
       const { user_password, user_status } = request.body;
-      // const salt = bcrypt.genSaltSync(10);
-      // const encryptPassword = bcrypt.hashSync(user_password, salt);
-      // const checkId = await getUserById(id);
-      // console.log(checkId[0].user_password);
-      // console.log(user_password.length);
-      // const setData = {
-      //   user_password,
-      //   user_status,
-      //   user_updated_at: new Date(),
-      // };
-      console.log(id);
-      // if (checkId.length > 0) {
-      //   const result = await updateUser(setData, id);
-      //   return helper.response(response, 201, "User Updated", result);
-      // } else {
-      //   return helper.response(response, 404, `User By Id: ${id} Not Found`);
-      // }
+      const requirement = (user_password) => {
+        let decimal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+        if (user_password.match(decimal)) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+      const salt = bcrypt.genSaltSync(10);
+      const encryptPassword = bcrypt.hashSync(user_password, salt);
+      const checkId = await getUserById(id);
+      if (user_password.length > 0 && requirement(user_password) === false) {
+        return helper.response(
+          response,
+          400,
+          `Password must be at least has minimum 8 character length, with one lowercase, one uppercase, one number and one special character`
+        );
+      } else {
+        if (user_status === "") {
+          return helper.response(response, 404, `User status must be filled`);
+        } else {
+          if (checkId.length > 0) {
+            const setData = {
+              user_password:
+                user_password.length < 1
+                  ? checkId[0].user_password
+                  : encryptPassword,
+              user_status,
+              user_updated_at: new Date(),
+            };
+            console.log(user_password);
+            console.log(setData);
+            const result = await patchUser(setData, id);
+            return helper.response(response, 201, "User Updated", result);
+          } else {
+            return helper.response(
+              response,
+              404,
+              `User By Id: ${id} Not Found`
+            );
+          }
+        }
+      }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
+      console.log(error);
     }
   },
   deleteUser: async (request, response) => {
     try {
       const { id } = request.params;
+      const { user_status } = request.body;
       const checkId = await getUserById(id);
-
-      if (checkId.length > 0) {
-        const result = await deleteUser(id);
-        return helper.response(response, 201, "Category Deleted", result);
+      if (user_status === "") {
+        return helper.response(response, 404, `User status must be filled`);
       } else {
-        return helper.response(
-          response,
-          404,
-          `Category By Id: ${id} Not Found`
-        );
+        if (checkId.length > 0) {
+          const setData = {
+            user_status,
+            user_updated_at: new Date(),
+          };
+          const result = await deleteUser(setData, id);
+          return helper.response(
+            response,
+            201,
+            "User Status Updated to inactive",
+            result
+          );
+        } else {
+          return helper.response(response, 404, `User By Id: ${id} Not Found`);
+        }
       }
     } catch (error) {
-      return helper.response(response, 400, "Bad Request", result);
+      return helper.response(response, 400, "Bad Request", error);
     }
   },
 };

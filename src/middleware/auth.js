@@ -17,9 +17,18 @@ module.exports = {
           console.log(error.expiredAt);
           return helper.response(response, 400, error.message);
         } else {
-          console.log(result);
-          request.token = result;
-          next();
+          if (result.user_status !== 0) {
+            console.log(result);
+            request.token = result;
+            next();
+          } else {
+            console.log(result);
+            return helper.response(
+              response,
+              400,
+              "Invalid action, status inactive"
+            );
+          }
         }
       });
     } else {
@@ -41,16 +50,23 @@ module.exports = {
           console.log(error.expiredAt);
           return helper.response(response, 400, error.message);
         } else {
-          if (result.user_role === 1) {
-            console.log("otorisasi admin");
-            console.log(result);
-            request.token = result;
-            next();
+          if (result.user_status !== 0) {
+            if (result.user_role === 1) {
+              request.token = result;
+              next();
+            } else {
+              return helper.response(
+                response,
+                400,
+                "Only admin who able to access this feature"
+              );
+            }
           } else {
+            console.log(result);
             return helper.response(
               response,
               400,
-              "Only admin who able to access this feature"
+              "Invalid action, status inactive"
             );
           }
         }
