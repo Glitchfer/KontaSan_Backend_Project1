@@ -26,24 +26,29 @@ module.exports = {
     let { page, limit } = request.query;
     page = parseInt(page);
     limit = parseInt(limit);
-    client.get(`productwithpage:${page}:${limit}`, (error, result) => {
-      if (!error && result != null) {
-        console.log(
-          `data product dengan page ${page} dan limit ${limit} tersedia di dalam redis`
-        );
-        return helper.response(
-          response,
-          200,
-          "Get Success",
-          JSON.parse(result)
-        );
-      } else {
-        console.log(
-          `data product dengan page ${page} dan limit ${limit} belum tersedia di dalam redis`
-        );
-        next();
+    client.get(
+      `productwithpage:${JSON.stringify(request.query)}`,
+      (error, result) => {
+        const newResult = JSON.parse(result);
+        if (!error && result != null) {
+          console.log(
+            `data product dengan page ${page} dan limit ${limit} tersedia di dalam redis`
+          );
+          return helper.response(
+            response,
+            200,
+            "Get Success",
+            newResult.result,
+            newResult.pageInfo
+          );
+        } else {
+          console.log(
+            `data product dengan page ${page} dan limit ${limit} belum tersedia di dalam redis`
+          );
+          next();
+        }
       }
-    });
+    );
   },
   sortProductByRedis: (request, response, next) => {
     let { sort_by } = request.query;
@@ -67,21 +72,25 @@ module.exports = {
   },
   searchProductRedis: (request, response, next) => {
     let { name } = request.query;
-    let { page, limit } = request.query;
-    client.get(`productsearchby:${name}:${page}:${limit}`, (error, result) => {
-      if (!error && result != null) {
-        console.log(`data search by ${name} tersedia di dalam redis`);
-        return helper.response(
-          response,
-          200,
-          `Get Product By Word: ${name}`,
-          JSON.parse(result)
-        );
-      } else {
-        console.log(`data search by ${name} belum tersedia di dalam redis`);
-        next();
+    client.get(
+      `productsearchby:${JSON.stringify(request.query)}`,
+      (error, result) => {
+        const newResult = JSON.parse(result);
+        if (!error && result != null) {
+          console.log(`data search by ${name} tersedia di dalam redis`);
+          return helper.response(
+            response,
+            200,
+            `Get Product By Word: ${name}`,
+            newResult.result,
+            newResult.pageInfo
+          );
+        } else {
+          console.log(`data search by ${name} belum tersedia di dalam redis`);
+          next();
+        }
       }
-    });
+    );
   },
   getAllCategoryRedis: (request, response, next) => {
     client.get("categorygetall", (error, result) => {
@@ -161,24 +170,29 @@ module.exports = {
     const { url: url = request.params } = request.params;
     const par = url.params;
     let { page, limit } = request.query;
-    client.get(`trigger${par}:${page}:${limit}`, (error, result) => {
-      if (!error && result != null) {
-        console.log(
-          `data order dengan page ${page} dan limit ${limit} tersedia di dalam redis`
-        );
-        return helper.response(
-          response,
-          200,
-          "Get Success",
-          JSON.parse(result)
-        );
-      } else {
-        console.log(
-          `data order dengan page ${page} dan limit ${limit} belum tersedia di dalam redis`
-        );
-        next();
+    client.get(
+      `trigger${par}:${JSON.stringify(request.query)}`,
+      (error, result) => {
+        const newResult = JSON.parse(result);
+        if (!error && result != null) {
+          console.log(
+            `data order dengan page ${page} dan limit ${limit} tersedia di dalam redis`
+          );
+          return helper.response(
+            response,
+            200,
+            "Get Success",
+            newResult.result,
+            newResult.pageInfo
+          );
+        } else {
+          console.log(
+            `data order dengan page ${page} dan limit ${limit} belum tersedia di dalam redis`
+          );
+          next();
+        }
       }
-    });
+    );
   },
   getInvoiceByIdRedis: (request, response, next) => {
     const { url: url = request.params, id } = request.params;

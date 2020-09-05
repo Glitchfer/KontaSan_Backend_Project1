@@ -75,11 +75,20 @@ module.exports = {
         return helper.response(response, 404, "Page does not exist");
       } else {
         const result = await getProduct(limit, offset);
+        const newData = {
+          result,
+          pageInfo,
+        };
         client.setex(
-          `productwithpage:${page}:${limit}`,
+          `productwithpage:${JSON.stringify(request.query)}`,
           120,
-          JSON.stringify(result)
+          JSON.stringify(newData)
         );
+        // client.setex(
+        //   `productwithpage:${page}:${limit}`,
+        //   120,
+        //   JSON.stringify(result)
+        // );
         return helper.response(response, 200, "Get Success", result, pageInfo);
       }
     } catch (error) {
@@ -137,11 +146,20 @@ module.exports = {
           return helper.response(response, 404, "Page does not exist");
         } else {
           if (result.length > 0) {
+            const newData = {
+              result,
+              pageInfo,
+            };
             client.setex(
-              `productsearchby:${name}:${page}:${limit}`,
+              `productsearchby:${JSON.stringify(request.query)}`,
               120,
-              JSON.stringify(result)
+              JSON.stringify(newData)
             );
+            // client.setex(
+            //   `productsearchby:${name}:${page}:${limit}`,
+            //   120,
+            //   JSON.stringify(result)
+            // );
             return helper.response(
               response,
               200,

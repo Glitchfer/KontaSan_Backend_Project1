@@ -84,10 +84,14 @@ module.exports = {
           return helper.response(response, 200, "Get Success", result);
         } else if (par == "orders") {
           const result = await getTrigger2(limit, offset);
+          const newData = {
+            result,
+            pageInfo,
+          };
           client.setex(
-            `trigger${par}:${page}:${limit}`,
+            `trigger${par}:${JSON.stringify(request.query)}`,
             120,
-            JSON.stringify(result)
+            JSON.stringify(newData)
           );
           return helper.response(
             response,
