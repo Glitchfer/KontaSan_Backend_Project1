@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2020 at 10:14 AM
+-- Generation Time: Sep 05, 2020 at 01:15 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -43,7 +43,8 @@ CREATE TABLE `activity` (
 --
 
 INSERT INTO `activity` (`activity_id`, `user_id`, `name`, `role`, `login`, `logout`, `token`, `sisa_token`) VALUES
-(1, 6, 'rey', '1', '2020-09-05 14:32:33', '2020-09-05 15:03:52', '00:00:00', '00:00:00');
+(1, 6, 'rey', '1', '2020-09-05 14:32:33', '2020-09-05 15:03:52', '00:00:00', '00:00:00'),
+(2, 6, 'rey', '1', '2020-09-05 17:32:25', '0000-00-00 00:00:00', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -260,10 +261,9 @@ INSERT INTO `product` (`product_id`, `product_name`, `product_price`, `product_s
 (25, 'Mineral Water', 3500, 1, '2020-08-18 15:31:54', '2020-08-30 16:39:59', 2, 'https://static.republika.co.id/uploads/images/inpicture_slide/air-mineral-kemasan-aqua-_180222205334-669.jpg'),
 (43, 'Omlete', 15000, 1, '2020-08-28 14:16:48', '2020-08-30 16:43:28', 1, 'https://img.qraved.co/v2/journal/wp-content/uploads/2015/03/Creamy-Salmon-Omurice-Half-Cooked_02-600x400-l.jpg'),
 (45, 'Black burger', 27800, 1, '2020-08-29 18:15:03', '2020-08-31 21:21:01', 1, 'https://images.unsplash.com/photo-1536748240857-8179775c9a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'),
-(52, 'vanila waffle berry', 26500, 1, '2020-09-01 17:47:12', '2020-09-03 18:45:47', 5, '2020-09-03T11-45-47.441Z-photo-1521704042371-f13409bf0e6d.jpg'),
-(57, 'Rose Ice Cream', 15000, 1, '2020-09-02 23:39:38', '0000-00-00 00:00:00', 5, '2020-09-02T16-39-38.885Z-photo-1584611312625-5541eed009e1.jpg'),
-(61, 'Salmon Teriyaki', 27500, 1, '2020-09-03 19:01:24', '2020-09-03 19:06:31', 5, '2020-09-03T12-06-31.602Z-img9.png'),
-(62, 'Donburi Chicken Katsu', 34500, 1, '2020-09-03 19:21:00', '0000-00-00 00:00:00', 1, '2020-09-03T12-21-00.084Z-img7.png');
+(52, 'Vanilla Waffle Berry', 24500, 1, '2020-09-01 17:47:12', '2020-09-05 18:06:52', 5, '2020-09-05T11-06-52.317Z-photo-1521704042371-f13409bf0e6d.jpg'),
+(57, 'Rose Ice Cream', 17000, 1, '2020-09-02 23:39:38', '2020-09-05 18:14:05', 5, '2020-09-05T11-14-05.656Z-photo-1584611312625-5541eed009e1.jpg'),
+(70, 'Oreo Milk Shake', 12000, 1, '2020-09-05 18:11:50', '2020-09-05 18:14:56', 2, '2020-09-05T11-14-56.489Z-oreo shake.jpg');
 
 -- --------------------------------------------------------
 
@@ -351,7 +351,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `activity_id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `activity_id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -387,7 +387,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `user`
