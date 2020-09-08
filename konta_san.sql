@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2020 at 01:15 PM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.8
+-- Waktu pembuatan: 08 Sep 2020 pada 05.54
+-- Versi server: 10.4.13-MariaDB
+-- Versi PHP: 7.4.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `activity`
+-- Struktur dari tabel `activity`
 --
 
 CREATE TABLE `activity` (
@@ -39,17 +39,21 @@ CREATE TABLE `activity` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `activity`
+-- Dumping data untuk tabel `activity`
 --
 
 INSERT INTO `activity` (`activity_id`, `user_id`, `name`, `role`, `login`, `logout`, `token`, `sisa_token`) VALUES
 (1, 6, 'rey', '1', '2020-09-05 14:32:33', '2020-09-05 15:03:52', '00:00:00', '00:00:00'),
-(2, 6, 'rey', '1', '2020-09-05 17:32:25', '0000-00-00 00:00:00', '00:00:00', '00:00:00');
+(2, 6, 'rey', '1', '2020-09-05 17:32:25', '2020-09-05 18:18:50', '00:00:00', '00:00:00'),
+(3, 5, 'saprolio', '2', '2020-09-06 21:21:21', '2020-09-06 21:42:09', '00:00:00', '00:00:00'),
+(4, 6, 'rey', '1', '2020-09-07 10:34:38', '0000-00-00 00:00:00', '00:00:00', '00:00:00'),
+(5, 5, 'saprolio', '2', '2020-09-07 11:37:25', '0000-00-00 00:00:00', '00:00:00', '00:00:00'),
+(6, 6, 'rey', '1', '2020-09-07 11:38:54', '0000-00-00 00:00:00', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Struktur dari tabel `category`
 --
 
 CREATE TABLE `category` (
@@ -58,7 +62,7 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `category`
+-- Dumping data untuk tabel `category`
 --
 
 INSERT INTO `category` (`category_id`, `category_name`) VALUES
@@ -69,7 +73,7 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `history`
+-- Struktur dari tabel `history`
 --
 
 CREATE TABLE `history` (
@@ -80,7 +84,7 @@ CREATE TABLE `history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `history`
+-- Dumping data untuk tabel `history`
 --
 
 INSERT INTO `history` (`history_id`, `date`, `invoice_number`, `revenue`) VALUES
@@ -89,7 +93,7 @@ INSERT INTO `history` (`history_id`, `date`, `invoice_number`, `revenue`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `income`
+-- Struktur dari tabel `income`
 --
 
 CREATE TABLE `income` (
@@ -101,7 +105,7 @@ CREATE TABLE `income` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invoice`
+-- Struktur dari tabel `invoice`
 --
 
 CREATE TABLE `invoice` (
@@ -115,7 +119,7 @@ CREATE TABLE `invoice` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `invoice`
+-- Dumping data untuk tabel `invoice`
 --
 
 INSERT INTO `invoice` (`invoice_id`, `invoice_number`, `total_price`, `tax`, `sub_total`, `created_at`, `updated_at`) VALUES
@@ -137,12 +141,13 @@ INSERT INTO `invoice` (`invoice_id`, `invoice_number`, `total_price`, `tax`, `su
 (140, 25378, 961665, 96167, 1057832, '2020-08-31 14:03:28', '2020-08-31 14:25:43'),
 (141, 24327, 137000, 13700, 150700, '2020-08-31 16:09:18', '2020-08-31 16:14:14'),
 (142, 37384, 66000, 6600, 72600, '2020-09-01 00:09:59', '2020-09-01 00:10:12'),
-(143, 80597, 47500, 4750, 52250, '2020-09-01 12:05:37', '2020-09-02 22:11:23');
+(143, 80597, 47500, 4750, 52250, '2020-09-01 12:05:37', '2020-09-02 22:11:23'),
+(145, 37183, 30000, 3000, 33000, '2020-09-06 21:35:56', '2020-09-06 21:38:52');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Struktur dari tabel `orders`
 --
 
 CREATE TABLE `orders` (
@@ -157,7 +162,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `orders`
+-- Dumping data untuk tabel `orders`
 --
 
 INSERT INTO `orders` (`orders_id`, `cashier_name`, `product_id`, `item_quantity`, `total_price`, `payment`, `invoice_id`, `date`) VALUES
@@ -224,12 +229,13 @@ INSERT INTO `orders` (`orders_id`, `cashier_name`, `product_id`, `item_quantity`
 (250, 'Yuji', 6, 2, 66000, 'CASH', 142, '2020-09-01 00:10:11'),
 (251, 'Mugi', 25, 5, 17500, 'CASH', 143, '2020-09-01 12:05:53'),
 (252, 'Mugi', 43, 2, 30000, 'CASH', 143, '2020-09-01 12:05:57'),
-(254, 'Arif', 1, 2, 20000, 'CASH', 144, '2020-09-02 22:14:18');
+(254, 'Arif', 1, 2, 20000, 'CASH', 144, '2020-09-02 22:14:18'),
+(255, 'saprolio', 1, 3, 30000, 'CASH', 145, '2020-09-06 21:38:49');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product`
+-- Struktur dari tabel `product`
 --
 
 CREATE TABLE `product` (
@@ -244,7 +250,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `product`
+-- Dumping data untuk tabel `product`
 --
 
 INSERT INTO `product` (`product_id`, `product_name`, `product_price`, `product_status`, `product_created_at`, `product_updated_at`, `category_id`, `img`) VALUES
@@ -268,7 +274,7 @@ INSERT INTO `product` (`product_id`, `product_name`, `product_price`, `product_s
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -283,117 +289,118 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`user_id`, `user_email`, `user_password`, `user_name`, `user_role`, `user_status`, `user_created_at`, `user_updated_at`) VALUES
 (1, 'arif12345@gmail.com', '$2b$10$yMqPTZVwHVgXiJHVX2qhv.V4g0/TweaDZeoEJK6tjxkyT.Dx4aJVu', 'arif', 2, 0, '2020-09-01 11:09:00', '2020-09-05 14:04:11'),
 (5, 'saprolio1234@gmail.com', '$2b$10$AYk5ZZF5ghS5ODXDjgspTenklEthMg3an1u6xXz1I2zEFxQsVKFTe', 'saprolio', 2, 1, '2020-09-02 18:16:32', '0000-00-00 00:00:00'),
-(6, 'rey1234@gmail.com', '$2b$10$ikXf/Yu/x4jucMu6sNO7J.otOB7irn.DC3P5JJVOTuJ.cT9DCq.Ra', 'rey', 1, 1, '2020-09-02 18:17:06', '2020-09-05 14:01:12');
+(6, 'rey1234@gmail.com', '$2b$10$ikXf/Yu/x4jucMu6sNO7J.otOB7irn.DC3P5JJVOTuJ.cT9DCq.Ra', 'rey', 1, 1, '2020-09-02 18:17:06', '2020-09-05 14:01:12'),
+(9, 'Shadow@gmail.com', '$2b$10$.6Q44SbqlBxHsIBBNZIb/efQ3Mlq.i7W5kFtdbVGE/WJSOmWxhqBS', 'mbahkunci', 1, 1, '2020-09-07 11:35:34', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `activity`
+-- Indeks untuk tabel `activity`
 --
 ALTER TABLE `activity`
   ADD PRIMARY KEY (`activity_id`);
 
 --
--- Indexes for table `category`
+-- Indeks untuk tabel `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Indexes for table `history`
+-- Indeks untuk tabel `history`
 --
 ALTER TABLE `history`
   ADD PRIMARY KEY (`history_id`);
 
 --
--- Indexes for table `income`
+-- Indeks untuk tabel `income`
 --
 ALTER TABLE `income`
   ADD PRIMARY KEY (`income_id`);
 
 --
--- Indexes for table `invoice`
+-- Indeks untuk tabel `invoice`
 --
 ALTER TABLE `invoice`
   ADD PRIMARY KEY (`invoice_id`);
 
 --
--- Indexes for table `orders`
+-- Indeks untuk tabel `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`orders_id`);
 
 --
--- Indexes for table `product`
+-- Indeks untuk tabel `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `activity`
+-- AUTO_INCREMENT untuk tabel `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `activity_id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `activity_id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `category`
+-- AUTO_INCREMENT untuk tabel `category`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `history`
+-- AUTO_INCREMENT untuk tabel `history`
 --
 ALTER TABLE `history`
   MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `income`
+-- AUTO_INCREMENT untuk tabel `income`
 --
 ALTER TABLE `income`
   MODIFY `income_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `invoice`
+-- AUTO_INCREMENT untuk tabel `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
+  MODIFY `invoice_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT untuk tabel `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=255;
+  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
 
 --
--- AUTO_INCREMENT for table `product`
+-- AUTO_INCREMENT untuk tabel `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
