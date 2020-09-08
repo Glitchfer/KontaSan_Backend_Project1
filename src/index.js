@@ -8,7 +8,7 @@ const category = require("./routes/category");
 // const orders = require("./routes/orders")
 const history = require("./routes/history");
 const trigger = require("./routes/trigger");
-const tutorial = require("./routes/tutorial");
+// const tutorial = require("./routes/tutorial");
 const income = require("./routes/income");
 const users = require("./routes/users");
 
@@ -19,7 +19,7 @@ routes.use("/category", category);
 // routes.use("/orders", orders)
 routes.use("/history", history);
 routes.use("/trigger", trigger);
-routes.use("/tutorial", tutorial);
+// routes.use("/tutorial", tutorial);
 routes.use("/income", income);
 routes.use("/users", users);
 

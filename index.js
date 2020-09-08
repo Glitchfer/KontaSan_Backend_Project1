@@ -29,7 +29,8 @@ app.use((request, response, next) => {
     "http://127.0.0.1:3001",
     "http://127.0.0.1:5500",
     "http://localhost:8080/",
-    "http://192.168.100.8:8080/"
+    "http://192.168.100.8:8080/",
+    "https://backend-kontasan.fwdev.online/"
   );
   response.header(
     "Access-Control-Allow-Headers",
