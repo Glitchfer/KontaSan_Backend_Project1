@@ -11,10 +11,10 @@ const {
 const { authorization2 } = require("../middleware/auth");
 
 // GET
-router.get("/login", loginUser);
 
 // POST
 router.post("/register", registerUser);
+router.post("/login", loginUser);
 
 // PATCH/PUT (untuk meng update)
 router.patch("/", patchLogout);

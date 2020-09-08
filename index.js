@@ -45,7 +45,7 @@ app.get("*", (request, response) => {
   response.status(404).send("path not found");
 });
 
-app.listen(3001, "127.0.0.1", () => {
+app.listen(process.env, process.env.IP, () => {
   //<----- menjalankan pada port tertentu
-  console.log("Express app sudah berjalan di host: 127.0.0.1 dan port: 3001");
+  console.log("Express app sudah berjalan");
 });
