@@ -47,5 +47,7 @@ app.get("*", (request, response) => {
 
 app.listen(process.env, process.env.IP, () => {
   //<----- menjalankan pada port tertentu
-  console.log("Express app sudah berjalan");
+  console.log(
+    `Express app sudah berjalan di port ${process.env} dan IP ${process.env.IP}`
+  );
 });
