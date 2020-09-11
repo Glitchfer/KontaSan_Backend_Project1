@@ -122,8 +122,13 @@ module.exports = {
             login: new Date(),
           };
           const result = await postLogin(loginInfo);
-          console.log(result);
-          return helper.response(response, 200, "Login success", payload);
+          return helper.response(
+            response,
+            200,
+            "Login success",
+            payload,
+            result
+          );
         } else {
           return helper.response(response, 400, "Invalid password");
         }
