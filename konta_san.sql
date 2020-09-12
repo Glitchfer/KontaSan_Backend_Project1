@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Sep 2020 pada 05.54
+-- Waktu pembuatan: 12 Sep 2020 pada 18.17
 -- Versi server: 10.4.13-MariaDB
 -- Versi PHP: 7.4.8
 
@@ -46,9 +46,29 @@ INSERT INTO `activity` (`activity_id`, `user_id`, `name`, `role`, `login`, `logo
 (1, 6, 'rey', '1', '2020-09-05 14:32:33', '2020-09-05 15:03:52', '00:00:00', '00:00:00'),
 (2, 6, 'rey', '1', '2020-09-05 17:32:25', '2020-09-05 18:18:50', '00:00:00', '00:00:00'),
 (3, 5, 'saprolio', '2', '2020-09-06 21:21:21', '2020-09-06 21:42:09', '00:00:00', '00:00:00'),
-(4, 6, 'rey', '1', '2020-09-07 10:34:38', '0000-00-00 00:00:00', '00:00:00', '00:00:00'),
-(5, 5, 'saprolio', '2', '2020-09-07 11:37:25', '0000-00-00 00:00:00', '00:00:00', '00:00:00'),
-(6, 6, 'rey', '1', '2020-09-07 11:38:54', '0000-00-00 00:00:00', '00:00:00', '00:00:00');
+(51, 6, 'rey', '1', '2020-09-11 13:05:20', '2020-09-11 13:05:22', '00:00:00', '00:00:00'),
+(52, 6, 'rey', '1', '2020-09-11 13:12:04', '2020-09-11 14:37:36', '00:00:00', '00:00:00'),
+(53, 11, 'Tobichan', '2', '2020-09-11 15:05:30', '2020-09-11 15:06:46', '00:00:00', '00:00:00'),
+(54, 11, 'Tobichan', '2', '2020-09-11 15:07:20', '2020-09-11 15:08:34', '00:00:00', '00:00:00'),
+(55, 6, 'rey', '1', '2020-09-11 15:16:09', '2020-09-11 15:38:56', '00:00:00', '00:00:00'),
+(56, 6, 'rey', '1', '2020-09-11 15:39:56', '2020-09-11 15:40:24', '00:00:00', '00:00:00'),
+(57, 6, 'rey', '1', '2020-09-11 15:44:33', '2020-09-11 15:45:09', '00:00:00', '00:00:00'),
+(58, 6, 'rey', '1', '2020-09-11 15:45:22', '2020-09-11 15:45:47', '00:00:00', '00:00:00'),
+(64, 6, 'rey', '1', '2020-09-11 16:34:46', '0000-00-00 00:00:00', '00:00:00', '00:00:00'),
+(65, 6, 'rey', '1', '2020-09-11 16:36:11', '2020-09-11 16:36:22', '00:00:00', '00:00:00'),
+(66, 6, 'rey', '1', '2020-09-11 18:35:25', '2020-09-11 19:35:32', '00:00:00', '00:00:00'),
+(67, 6, 'rey', '1', '2020-09-11 20:06:09', '2020-09-11 21:07:03', '00:00:00', '00:00:00'),
+(68, 6, 'rey', '1', '2020-09-11 21:10:44', '2020-09-12 00:55:39', '00:00:00', '00:00:00'),
+(69, 6, 'rey', '1', '2020-09-12 00:58:27', '2020-09-12 01:24:38', '00:00:00', '00:00:00'),
+(70, 6, 'rey', '1', '2020-09-12 10:07:19', '2020-09-12 11:59:09', '00:00:00', '00:00:00'),
+(71, 6, 'rey', '1', '2020-09-12 11:59:32', '2020-09-12 12:06:01', '00:00:00', '00:00:00'),
+(72, 1, 'arif', '2', '2020-09-12 12:06:32', '2020-09-12 12:07:30', '00:00:00', '00:00:00'),
+(73, 1, 'arif', '2', '2020-09-12 12:08:05', '2020-09-12 12:46:09', '00:00:00', '00:00:00'),
+(74, 6, 'rey', '1', '2020-09-12 12:46:25', '2020-09-12 14:38:52', '00:00:00', '00:00:00'),
+(75, 6, 'rey', '1', '2020-09-12 14:43:00', '2020-09-12 14:43:04', '00:00:00', '00:00:00'),
+(76, 6, 'rey', '1', '2020-09-12 14:44:07', '2020-09-12 14:50:49', '00:00:00', '00:00:00'),
+(78, 6, 'rey', '1', '2020-09-12 15:53:17', '2020-09-12 16:20:07', '00:00:00', '00:00:00'),
+(83, 6, 'rey', '1', '2020-09-12 22:55:50', '0000-00-00 00:00:00', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -123,6 +143,7 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`invoice_id`, `invoice_number`, `total_price`, `tax`, `sub_total`, `created_at`, `updated_at`) VALUES
+(1, 33234, 2000000, 200000, 2200000, '2019-08-22 00:44:27', '2019-08-22 00:44:41'),
 (125, 90411, 60000, 6000, 66000, '2020-08-30 00:44:27', '2020-08-30 00:44:41'),
 (126, 102774, 42000, 4200, 46200, '2020-08-30 00:45:12', '2020-08-30 00:45:26'),
 (127, 17572, 123000, 12300, 135300, '2020-08-30 00:45:40', '2020-08-30 00:45:59'),
@@ -142,7 +163,15 @@ INSERT INTO `invoice` (`invoice_id`, `invoice_number`, `total_price`, `tax`, `su
 (141, 24327, 137000, 13700, 150700, '2020-08-31 16:09:18', '2020-08-31 16:14:14'),
 (142, 37384, 66000, 6600, 72600, '2020-09-01 00:09:59', '2020-09-01 00:10:12'),
 (143, 80597, 47500, 4750, 52250, '2020-09-01 12:05:37', '2020-09-02 22:11:23'),
-(145, 37183, 30000, 3000, 33000, '2020-09-06 21:35:56', '2020-09-06 21:38:52');
+(145, 37183, 30000, 3000, 33000, '2020-09-06 21:35:56', '2020-09-06 21:38:52'),
+(146, 81429, 51800, 5180, 56980, '2020-09-10 16:07:36', '2020-09-10 16:08:03'),
+(147, 109182, 101000, 10100, 111100, '2020-09-11 16:12:26', '2020-09-11 16:12:36'),
+(148, 107754, 30000, 3000, 33000, '2020-09-11 21:11:23', '2020-09-11 21:11:27'),
+(149, 87609, 12000, 1200, 13200, '2020-09-11 21:18:52', '2020-09-11 21:18:57'),
+(150, 49153, 33000, 3300, 36300, '2020-09-12 01:10:13', '2020-09-12 01:10:24'),
+(151, 29706, 7000, 700, 7700, '2020-09-12 12:47:47', '2020-09-12 12:48:01'),
+(152, 101420, 30000, 3000, 33000, '2020-09-12 14:52:10', '2020-09-12 14:52:15'),
+(162, 14441, 20000, 2000, 22000, '2020-09-12 19:57:02', '2020-09-12 19:57:08');
 
 -- --------------------------------------------------------
 
@@ -230,7 +259,18 @@ INSERT INTO `orders` (`orders_id`, `cashier_name`, `product_id`, `item_quantity`
 (251, 'Mugi', 25, 5, 17500, 'CASH', 143, '2020-09-01 12:05:53'),
 (252, 'Mugi', 43, 2, 30000, 'CASH', 143, '2020-09-01 12:05:57'),
 (254, 'Arif', 1, 2, 20000, 'CASH', 144, '2020-09-02 22:14:18'),
-(255, 'saprolio', 1, 3, 30000, 'CASH', 145, '2020-09-06 21:38:49');
+(255, 'saprolio', 1, 3, 30000, 'CASH', 145, '2020-09-06 21:38:49'),
+(256, 'Mia', 45, 1, 27800, 'CASH', 146, '2020-09-10 16:07:52'),
+(257, 'Mia', 70, 2, 24000, 'CASH', 146, '2020-09-10 16:08:03'),
+(258, 'rey', 2, 1, 15000, 'CASH', 147, '2020-09-11 16:12:29'),
+(259, 'rey', 1, 2, 20000, 'CASH', 147, '2020-09-11 16:12:34'),
+(260, 'rey', 6, 2, 66000, 'CASH', 147, '2020-09-11 16:12:35'),
+(261, 'rey', 2, 2, 30000, 'CASH', 148, '2020-09-11 21:11:27'),
+(262, 'rey', 3, 2, 12000, 'CASH', 149, '2020-09-11 21:18:57'),
+(263, 'rey', 6, 1, 33000, 'CASH', 150, '2020-09-12 01:10:23'),
+(264, 'rey', 25, 2, 7000, 'CASH', 151, '2020-09-12 12:48:00'),
+(265, 'Tobichan', 2, 2, 30000, 'CASH', 152, '2020-09-12 14:52:15'),
+(272, 'rey', 1, 2, 20000, 'CASH', 162, '2020-09-12 19:57:07');
 
 -- --------------------------------------------------------
 
@@ -254,19 +294,19 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `product_name`, `product_price`, `product_status`, `product_created_at`, `product_updated_at`, `category_id`, `img`) VALUES
-(1, 'Espresso', 10000, 1, '2020-08-12 19:54:03', '2020-08-23 10:01:39', 2, 'https://i2.wp.com/gettravelinspired.com/wp-content/uploads/2020/02/jeremy-ricketts-6ZnhM-xBpos-unsplash-1.jpg?fit=1440%2C960&ssl=1'),
-(2, 'Coffee Latte', 15000, 1, '2020-08-12 20:05:10', '2020-08-15 11:15:45', 2, 'https://images.unsplash.com/photo-1595244333063-a394c9cdd63f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1489&q=80'),
-(3, 'Cappucino', 6000, 1, '2020-08-12 20:20:08', '2020-08-15 11:16:11', 2, 'https://images.unsplash.com/photo-1578193658007-9e4381948aa1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'),
-(6, 'Red Velvet Latte', 33000, 1, '2020-08-15 11:10:09', '0000-00-00 00:00:00', 2, 'https://images.unsplash.com/photo-1461010083959-8a5727311252?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1011&q=80'),
-(7, 'Choco Rhum', 28000, 1, '2020-08-15 11:11:09', '0000-00-00 00:00:00', 5, 'https://images.unsplash.com/photo-1595941973526-36f24f42aa71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80'),
-(8, 'Black Forest', 30000, 1, '2020-08-15 11:11:38', '0000-00-00 00:00:00', 5, 'https://images.unsplash.com/photo-1564844536308-75c540dbf14e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80'),
-(9, 'Chicken Katsu Dabu-dabu', 30000, 1, '2020-08-15 11:11:55', '0000-00-00 00:00:00', 1, 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80'),
-(10, 'Salmon Truffle Teriyaki', 60000, 1, '2020-08-15 11:12:28', '0000-00-00 00:00:00', 1, 'https://images.unsplash.com/photo-1560717845-968823efbee1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'),
-(11, 'Wiener Schnitzel', 69000, 1, '2020-08-15 11:13:04', '0000-00-00 00:00:00', 1, 'https://images.unsplash.com/photo-1560611588-163f295eb145?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'),
-(13, 'Twister Metal Pancake', 24500, 1, '2020-08-15 20:41:54', '2020-08-31 21:31:33', 1, 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=925&q=80'),
-(25, 'Mineral Water', 3500, 1, '2020-08-18 15:31:54', '2020-08-30 16:39:59', 2, 'https://static.republika.co.id/uploads/images/inpicture_slide/air-mineral-kemasan-aqua-_180222205334-669.jpg'),
-(43, 'Omlete', 15000, 1, '2020-08-28 14:16:48', '2020-08-30 16:43:28', 1, 'https://img.qraved.co/v2/journal/wp-content/uploads/2015/03/Creamy-Salmon-Omurice-Half-Cooked_02-600x400-l.jpg'),
-(45, 'Black burger', 27800, 1, '2020-08-29 18:15:03', '2020-08-31 21:21:01', 1, 'https://images.unsplash.com/photo-1536748240857-8179775c9a67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'),
+(1, 'Espresso', 10000, 1, '2020-08-12 19:54:03', '2020-09-12 22:57:48', 2, '2020-09-12T15-57-48.165Z-img0.png'),
+(2, 'Coffee Latte', 15000, 1, '2020-08-12 20:05:10', '2020-09-12 23:06:00', 2, '2020-09-12T16-06-00.567Z-img2.png'),
+(3, 'Cappucino', 6000, 1, '2020-08-12 20:20:08', '2020-09-12 23:08:27', 2, '2020-09-12T16-08-27.524Z-img3.png'),
+(6, 'Red Velvet Latte', 33000, 1, '2020-08-15 11:10:09', '2020-09-12 23:09:09', 2, '2020-09-12T16-09-09.830Z-img4.png'),
+(7, 'Choco Rhum', 28000, 1, '2020-08-15 11:11:09', '2020-09-12 23:09:54', 5, '2020-09-12T16-09-54.846Z-img5.png'),
+(8, 'Black Forest', 30000, 1, '2020-08-15 11:11:38', '2020-09-12 23:10:37', 5, '2020-09-12T16-10-37.550Z-img6.png'),
+(9, 'Chicken Katsu Dabu-dabu', 30000, 1, '2020-08-15 11:11:55', '2020-09-12 23:11:20', 1, '2020-09-12T16-11-20.018Z-img7.png'),
+(10, 'Salmon Truffle Teriyaki', 60000, 1, '2020-08-15 11:12:28', '2020-09-12 23:11:55', 1, '2020-09-12T16-11-55.172Z-img8.png'),
+(11, 'Wiener Schnitzel', 69000, 1, '2020-08-15 11:13:04', '2020-09-12 23:12:46', 1, '2020-09-12T16-12-46.423Z-img9.png'),
+(13, 'Twisted Metal Pancake', 24500, 1, '2020-08-15 20:41:54', '2020-09-12 23:13:34', 1, '2020-09-12T16-13-34.995Z-photo-1598214886806-c87b84b7078b.jpg'),
+(25, 'Mineral Water', 3500, 1, '2020-08-18 15:31:54', '2020-09-12 23:14:03', 2, '2020-09-12T16-14-03.063Z-air-mineral-kemasan-aqua-_180222205334-669.jpg'),
+(43, 'Creamy Omurice', 15000, 1, '2020-08-28 14:16:48', '2020-09-12 23:14:46', 1, '2020-09-12T16-14-46.396Z-Creamy-Salmon-Omurice-Half-Cooked_02-600x400-l.jpg'),
+(45, 'Black Burger', 27800, 1, '2020-08-29 18:15:03', '2020-09-12 23:15:23', 1, '2020-09-12T16-15-23.733Z-photo-1536748240857-8179775c9a67.jpg'),
 (52, 'Vanilla Waffle Berry', 24500, 1, '2020-09-01 17:47:12', '2020-09-05 18:06:52', 5, '2020-09-05T11-06-52.317Z-photo-1521704042371-f13409bf0e6d.jpg'),
 (57, 'Rose Ice Cream', 17000, 1, '2020-09-02 23:39:38', '2020-09-05 18:14:05', 5, '2020-09-05T11-14-05.656Z-photo-1584611312625-5541eed009e1.jpg'),
 (70, 'Oreo Milk Shake', 12000, 1, '2020-09-05 18:11:50', '2020-09-05 18:14:56', 2, '2020-09-05T11-14-56.489Z-oreo shake.jpg');
@@ -293,10 +333,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_email`, `user_password`, `user_name`, `user_role`, `user_status`, `user_created_at`, `user_updated_at`) VALUES
-(1, 'arif12345@gmail.com', '$2b$10$yMqPTZVwHVgXiJHVX2qhv.V4g0/TweaDZeoEJK6tjxkyT.Dx4aJVu', 'arif', 2, 0, '2020-09-01 11:09:00', '2020-09-05 14:04:11'),
+(1, 'arif12345@gmail.com', '$2b$10$xhbMEgMovqOvMCSVVv5JJ./mH6dAS87fuk4BRDnTdIQTJl.6Y55s2', 'arif', 2, 1, '2020-09-01 11:09:00', '2020-09-12 12:05:46'),
 (5, 'saprolio1234@gmail.com', '$2b$10$AYk5ZZF5ghS5ODXDjgspTenklEthMg3an1u6xXz1I2zEFxQsVKFTe', 'saprolio', 2, 1, '2020-09-02 18:16:32', '0000-00-00 00:00:00'),
 (6, 'rey1234@gmail.com', '$2b$10$ikXf/Yu/x4jucMu6sNO7J.otOB7irn.DC3P5JJVOTuJ.cT9DCq.Ra', 'rey', 1, 1, '2020-09-02 18:17:06', '2020-09-05 14:01:12'),
-(9, 'Shadow@gmail.com', '$2b$10$.6Q44SbqlBxHsIBBNZIb/efQ3Mlq.i7W5kFtdbVGE/WJSOmWxhqBS', 'mbahkunci', 1, 1, '2020-09-07 11:35:34', '0000-00-00 00:00:00');
+(9, 'Shadow@gmail.com', '$2b$10$.6Q44SbqlBxHsIBBNZIb/efQ3Mlq.i7W5kFtdbVGE/WJSOmWxhqBS', 'mbahkunci', 1, 1, '2020-09-07 11:35:34', '0000-00-00 00:00:00'),
+(11, 'tobiropo@gmail.com', '$2b$10$zrTO8eMSxWeKUBgvxK6SReziIB67SnW/0t1vcb3r8S34ULRiV9jfi', 'Tobichan', 2, 1, '2020-09-11 15:02:41', '2020-09-12 14:50:18');
 
 --
 -- Indexes for dumped tables
@@ -358,7 +399,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `activity_id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `activity_id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT untuk tabel `category`
@@ -382,25 +423,25 @@ ALTER TABLE `income`
 -- AUTO_INCREMENT untuk tabel `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
+  MODIFY `invoice_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT untuk tabel `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
+  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=273;
 
 --
 -- AUTO_INCREMENT untuk tabel `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
