@@ -15,7 +15,7 @@ module.exports = {
   weeklyOrders: (orders) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT sum(invoice.sub_total) as sub_total, COUNT(*) as total_order, DATE_FORMAT(CURRENT_DATE - INTERVAL 1 WEEK, '%d-%m-%Y') as last_week FROM invoice WHERE DATE(updated_at) = WEEK(NOW()) - INTERVAL 1 WEEK`,
+        `SELECT sum(invoice.sub_total) AS sub_total, COUNT(*) as total_order, DATE_FORMAT(CURRENT_DATE - INTERVAL 1 WEEK, '%d-%m-%Y') as last_week FROM invoice WHERE WEEK(invoice.updated_at) = WEEK(NOW())-1 GROUP BY WEEK(invoice.updated_at)`,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }
@@ -25,7 +25,7 @@ module.exports = {
   thisYearIncome: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT sum(invoice.sub_total) as sub_total, COUNT(*) as total_order, DATE_FORMAT(DATE(NOW()) - INTERVAL 1 YEAR, '%Y') as last_year FROM invoice WHERE DATE(updated_at) = YEAR(NOW()) - INTERVAL 1 YEAR`,
+        `SELECT sum(invoice.sub_total) AS sub_total, COUNT(*) as total_order, DATE_FORMAT(DATE(NOW()) - INTERVAL 1 YEAR, '%Y') as last_year FROM invoice WHERE YEAR(invoice.updated_at) = YEAR(NOW())-1 GROUP BY YEAR(invoice.updated_at)`,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }

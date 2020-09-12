@@ -30,8 +30,7 @@ module.exports = {
       case "hours":
         return new Promise((resolve, reject) => {
           connection.query(
-            // `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`
-            `SELECT DATE_FORMAT(updated_at, '%d/%m %T') as Date, sub_total as Total FROM invoice`,
+            `SELECT DATE_FORMAT(updated_at, '%d/%m %T') as Date, sub_total as Total FROM invoice WHERE YEAR(updated_at) = YEAR(NOW())`,
             (error, result) => {
               !error ? resolve(result) : reject(new Error(error));
             }
@@ -41,7 +40,7 @@ module.exports = {
       case "year":
         return new Promise((resolve, reject) => {
           connection.query(
-            `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice`,
+            `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice WHERE YEAR(updated_at) = YEAR(NOW())`,
             (error, result) => {
               !error ? resolve(result) : reject(new Error(error));
             }
@@ -51,7 +50,7 @@ module.exports = {
       case "lastYear":
         return new Promise((resolve, reject) => {
           connection.query(
-            `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice WHERE updated_at < 01-01-2020`,
+            `SELECT DATE_FORMAT(updated_at, '%d-%m-%Y') as Date, sub_total as Total FROM invoice WHERE YEAR(updated_at) = YEAR(NOW())-1`,
             (error, result) => {
               !error ? resolve(result) : reject(new Error(error));
             }
@@ -71,41 +70,4 @@ module.exports = {
       );
     });
   },
-  // patchHistory: (setData, id) => {
-  //   return new Promise((resolve, reject) => {
-  //     connection.query(
-  //       "UPDATE history SET ? WHERE history_id = ?",
-  //       [setData, id],
-  //       (error, result) => {
-  //         if (!error) {
-  //           const newResult = {
-  //             history_id: id,
-  //             ...setData,
-  //           };
-  //           resolve(newResult);
-  //         } else {
-  //           reject(new Error(error));
-  //         }
-  //       }
-  //     );
-  //   });
-  // },
-  // deleteHistory: (id) => {
-  //   return new Promise((resolve, reject) => {
-  //     connection.query(
-  //       "DELETE FROM history WHERE history_id = ?",
-  //       id,
-  //       (error, result) => {
-  //         if (!error) {
-  //           const newResult = {
-  //             id: id,
-  //           };
-  //           resolve(newResult);
-  //         } else {
-  //           reject(new Error(error));
-  //         }
-  //       }
-  //     );
-  //   });
-  // },
 };
