@@ -114,7 +114,7 @@ module.exports = {
   deleteTrigger2: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "DELETE FROM orders WHERE orders_id = ?",
+        "DELETE FROM orders WHERE invoice_id = ?",
         id,
         (error, result) => {
           if (!error) {

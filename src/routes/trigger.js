@@ -48,7 +48,7 @@ router.patch(
 // // DELETE
 router.delete(
   "/:params/:id",
-  authorization2,
+  authorization,
   clearDataTriggerRedis,
   deleteTrigger
 );

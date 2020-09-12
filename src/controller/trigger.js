@@ -349,7 +349,7 @@ module.exports = {
           );
         }
       } else if (par == "orders") {
-        const checkId = await getTrigger2ById(id);
+        const checkId = await getTrigger1ById(id);
         if (checkId.length > 0) {
           const result = await deleteTrigger2(id);
           return helper.response(response, 201, "Orders Deleted", result);
@@ -357,7 +357,7 @@ module.exports = {
           return helper.response(
             response,
             404,
-            `Orders By Id: ${id} Not Found`
+            `Invoice By Id: ${id} Not Found`
           );
         }
       } else {
