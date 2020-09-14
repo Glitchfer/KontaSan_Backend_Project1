@@ -28,8 +28,9 @@ app.use((request, response, next) => {
     "Access-Control-Allow-Origin",
     "http://127.0.0.1:3001",
     "http://127.0.0.1:5500",
+    "http://172.31.59.4:3001",
     "http://localhost:8080/",
-    "http://192.168.100.8:8080/",
+    "http://192.168.100.7:8080/",
     "https://backend-kontasan.fwdev.online/"
   );
   response.header(
