@@ -56,7 +56,6 @@ module.exports = {
   postCategory: async (request, response) => {
     try {
       const { category_name } = request.body;
-
       const setData = {
         category_name,
       };
