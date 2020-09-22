@@ -13,14 +13,6 @@ const jwt = require("jsonwebtoken");
 const helper = require("../helper");
 
 module.exports = {
-  // getAllUsers: async (request, response) => {
-  //     try {
-  //         const result = await getUsers();
-  //         return helper.response(response, 200, "Get Success", result);
-  //     } catch (error) {
-  //         return helper.response(response, 400, "Bad Request", error);
-  //     }
-  // },
   registerUser: async (request, response) => {
     const { register } = request.params;
     const { user_email, user_password, user_role, user_name } = request.body;
