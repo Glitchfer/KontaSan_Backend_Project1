@@ -226,6 +226,7 @@ module.exports = {
         return helper.response(response, 400, "Params does not exist");
       }
     } catch (error) {
+      console.log(error);
       return helper.response(
         response,
         400,
