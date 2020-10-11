@@ -72,8 +72,8 @@ module.exports = {
         }
       }
     } catch (error) {
-      return helper.response(response, 400, "Bad Request", error);
       console.log(error);
+      return helper.response(response, 400, "Bad Request", error);
     }
   },
   loginUser: async (request, response) => {
@@ -128,6 +128,7 @@ module.exports = {
         return helper.response(response, 400, "Email not registered");
       }
     } catch (error) {
+      console.log(error);
       return helper.response(response, 400, "Bad Request", error);
     }
   },
