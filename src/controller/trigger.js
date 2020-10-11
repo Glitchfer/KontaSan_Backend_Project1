@@ -167,6 +167,9 @@ module.exports = {
           invoice_number: (invoice_number = Math.round(
             Math.random() * 99999 + 10000
           )),
+          total_price: 0,
+          tax: 0,
+          sub_total: 0,
           created_at: new Date(),
         };
         const result = await postTrigger1(setData1);
