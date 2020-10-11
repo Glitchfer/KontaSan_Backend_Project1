@@ -9,7 +9,7 @@ module.exports = {
           connection.query(
             // `SELECT * FROM invoice INNER JOIN orders USING (invoice_id) LIMIT ? OFFSET ? `
             // `SELECT invoice.invoice_id, invoice.invoice_number, orders.cashier_name, orders.product_id, product.product_name, orders.item_quantity, orders.total_price, invoice.total_price, invoice.tax, invoice.sub_total, invoice.updated_at FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id LIMIT ? OFFSET ? `
-            `SELECT invoice.invoice_id, invoice.invoice_number, orders.cashier_name, GROUP_CONCAT(CONCAT_WS(  orders.item_quantity, product.product_name), ' ', CONCAT_WS(product.product_name, orders.item_quantity), 'x') AS 'orders', GROUP_CONCAT(orders.total_price) AS 'price', invoice.total_price, invoice.tax, invoice.sub_total, invoice.updated_at FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id WHERE YEARWEEK(updated_at) = YEARWEEK(NOW())`,
+            `SELECT * GROUP_CONCAT(CONCAT_WS(  orders.item_quantity, product.product_name), ' ', CONCAT_WS(product.product_name, orders.item_quantity), 'x') AS 'orders', GROUP_CONCAT(orders.total_price) AS 'price' FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id WHERE YEARWEEK(updated_at) = YEARWEEK(NOW())  GROUP BY updated_at`,
             (error, result) => {
               !error ? resolve(result) : reject(new Error(error));
             }
@@ -19,7 +19,7 @@ module.exports = {
       case "day":
         return new Promise((resolve, reject) => {
           connection.query(
-            `SELECT invoice.invoice_id, invoice.invoice_number, orders.cashier_name, GROUP_CONCAT(CONCAT_WS(  orders.item_quantity, product.product_name), ' ', CONCAT_WS(product.product_name, orders.item_quantity), 'x') AS 'orders', GROUP_CONCAT(orders.total_price) AS 'price', invoice.total_price, invoice.tax, invoice.sub_total, invoice.updated_at FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id WHERE DATE(updated_at) = DATE(NOW())`,
+            `SELECT * GROUP_CONCAT(CONCAT_WS(  orders.item_quantity, product.product_name), ' ', CONCAT_WS(product.product_name, orders.item_quantity), 'x') AS 'orders', GROUP_CONCAT(orders.total_price) AS 'price' FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id WHERE DATE(updated_at) = DATE(NOW())  GROUP BY updated_at`,
             (error, result) => {
               !error ? resolve(result) : reject(new Error(error));
             }
@@ -29,7 +29,7 @@ module.exports = {
       case "month":
         return new Promise((resolve, reject) => {
           connection.query(
-            `SELECT invoice.invoice_id, invoice.invoice_number, orders.cashier_name, GROUP_CONCAT(CONCAT_WS(  orders.item_quantity, product.product_name), ' ', CONCAT_WS(product.product_name, orders.item_quantity), 'x') AS 'orders', GROUP_CONCAT(orders.total_price) AS 'price', invoice.total_price, invoice.tax, invoice.sub_total, invoice.updated_at FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id WHERE CONCAT(YEAR(updated_at),'/',MONTH(updated_at))=CONCAT(YEAR(NOW()),'/',MONTH(NOW()))`,
+            `SELECT * GROUP_CONCAT(CONCAT_WS(  orders.item_quantity, product.product_name), ' ', CONCAT_WS(product.product_name, orders.item_quantity), 'x') AS 'orders', GROUP_CONCAT(orders.total_price) AS 'price' FROM invoice JOIN orders ON invoice.invoice_id = orders.invoice_id JOIN product ON orders.product_id = product.product_id WHERE CONCAT(YEAR(updated_at),'/',MONTH(updated_at))=CONCAT(YEAR(NOW()),'/',MONTH(NOW()))  GROUP BY updated_at`,
             (error, result) => {
               !error ? resolve(result) : reject(new Error(error));
             }
