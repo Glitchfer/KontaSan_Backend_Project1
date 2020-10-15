@@ -20,7 +20,7 @@ KontaSan Project adalah aplikasi pos berbasis website yang digunakan untuk memba
 2. Type `npm install`
 3. Make new file a called **.env**, set up first [here](#set-up-env-file)
 4. Turn on Web Server and MySQL can using Third-party tool like xampp, etc.
-5. Create a database with the name #nama_database, and Import file sql to **phpmyadmin**
+5. Create a database with the name konta_san, and Import file sql to **phpmyadmin**
 6. Open Postman desktop application or Chrome web app extension that has installed before
 7. Choose HTTP Method and enter request url.(ex. localhost:3000/)
 8. You can see all the end point [here](#end-point)
@@ -30,7 +30,13 @@ KontaSan Project adalah aplikasi pos berbasis website yang digunakan untuk memba
 Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
-DB_HOST=localhost // Database host
+DB_HOST=localhost // Database Host
+DB_USER=root // Database Root
+DB_PASS= // Password set for database is empty
+DB_DATABASE=konta_san // Database
+PORT=3001 // PORT
+IP=127.0.0.1 // IP
+
 ```
 
 ## End Point
@@ -39,17 +45,102 @@ DB_HOST=localhost // Database host
 
 - `/product`(Get all product)
 
+- `/product/:id`(GET product by id)
+
+- `/trigger/order`(GET all order)
+
+- `/trigger/invoice`(GET all invoice)
+
+- `/trigger/invoice/:id`(GET invoice by id)
+
+- `/trigger/order/:id`(GET order by id )
+
+- `/income`(GET today income)
+
+- `/income/orders`(GET weekly orders)
+
+- `/history`(GET all history)
+
+- `/history/orders`(GET history by id)
+
+- `/category`(GET all category)
+
+- `/category/:id`(GET category by id)
+
 **2. POST**
 
 - `/product` (Post product)
-  - `{ "product_name": "Capucinno", "category_id": 2, "product_harga": 6000 , "product_status" : 1 | 0}`
+
+  - body `{ "product_name": "Capucinno", "category_id": 2, "product_harga": 6000 , "product_status" : 1 | 0}`
+
+- `/category` (Post category)
+
+  - body `{ "category_name": "Beverage"}`
+
+- `/history` (Post history)
+
+- `/history/revenue` (Get Revenue)
+
+  - Query `{ "select": "hours" | "year" | "lastYear"}`
+
+- `/income` (Post income)
+
+- `/income/income` (Get this year income)
+
+- `/trigger/invoice` (Post invoice)
+
+- `/trigger/orders` (Post order)
+
+  - Body `{ "cashier_name": "rey", "product_id": 1, "item_quantity": 2, "invoice_id": 103}`
+
+- `/users/register` (Register)
+
+  - Body `{ "user_email": "rey1234@gmail.com", "user_password": "adaadaada", "user_role": "#Admin", "user_name": "Rey"}`
+
+- `/users/login` (Login)
+
+  - Body `{ "user_email": "rey1234@gmail.com", "user_password": "adaakudisini"}`
 
 **3. PATCH**
 
 - `/product/:id` (Update product by id)
 
-  - `{"product_name" : "Teriyaki", "category_id" : 1, "product_harga" : 24000, "product_status" : 1 | 0}`
+  - Body `{"product_name": "Teriyaki", "category_id": 1, "product_harga": 24000, "product_status": 1 | 0}`
+
+- `/users` (Logout)
+
+  - Query `{ "activity_id": 101, "user_id": 6}`
+
+- `/users/:id` (Update user data)
+
+  - Body `{ "user_password": "bebas", "user_status": 1 | 0}`
+
+- `/trigger/invoice/:id` (Update invoice)
+
+- `/trigger/orders/:id` (Update orders)
+
+  - Body `{ "product_id": 4, "item_quantity": 2, "invoice_id": 105}`
+
+- `/category/:id` (Update category)
+
+  - Body `{ "category_name": "Souvenir"}`
 
 **4. DELETE**
 
 - `/product/:id` (Delete product by id)
+
+- `/users/:id` (Delete user)
+
+- `/category/:id` (Delete category)
+
+- `/trigger/order/:id` (Delete orders)
+
+- `/trigger/invoice/:id` (Delete invoice)
+
+**Documentation API**
+
+https://documenter.getpostman.com/view/12208824/TVRq1RHv
+
+## License
+
+© [Arif Rahman](https://github.com/Glitchfer)
