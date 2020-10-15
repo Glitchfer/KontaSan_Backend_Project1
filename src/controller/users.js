@@ -11,6 +11,7 @@ const {
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const helper = require("../helper");
+const nodemailer = require("nodemailer");
 
 module.exports = {
   registerUser: async (request, response) => {
@@ -232,6 +233,43 @@ module.exports = {
         }
       }
     } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  sendEmail: async (request, response) => {
+    const { sendemail } = request.params;
+    try {
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "badag.corp@gmail.com",
+          pass: "odading21",
+        },
+      });
+      await transporter.sendMail({
+        from: '"Konta"',
+        to: "a1.arifrahman.1213@gmail.com",
+        subject: "Konta - Purchase Detail",
+        html: `
+        Here is your purchasing detail:<br>
+        <br>Cashier name: Rey
+        <br>Item/Price : Espresso(1x)/Rp. 10,000, Black Forest(2x)/Rp. 60,000
+        <br>total : Rp. 70,000
+        <br>PPN 10% : Rp. 7,000
+        <br>Total Price : Rp. 77,000<br>
+
+        <br>Thank you for your purchasing, Enjoy your meal !`,
+      }),
+        function (error) {
+          if (error) {
+            return helper.response(response, 400, "Email not sent !");
+          }
+        };
+      return helper.response(response, 200, "Email has been sent !");
+    } catch (error) {
+      console.log(error);
       return helper.response(response, 400, "Bad Request", error);
     }
   },

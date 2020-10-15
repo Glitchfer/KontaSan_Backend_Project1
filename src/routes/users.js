@@ -7,6 +7,7 @@ const {
   patchLogout,
   patchUser,
   deleteUser,
+  sendEmail,
 } = require("../controller/users");
 const { authorization2 } = require("../middleware/auth");
 
@@ -15,6 +16,7 @@ const { authorization2 } = require("../middleware/auth");
 // POST
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/sendemail", sendEmail);
 
 // PATCH/PUT (untuk meng update)
 router.patch("/", patchLogout);
