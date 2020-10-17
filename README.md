@@ -1,6 +1,6 @@
 <h1 align="center">ExpressJS - #KontaSan_Project RESTfull API</h1>
 
-KontaSan Project adalah aplikasi pos berbasis website yang digunakan untuk membantu kasir dalam pengelolaan order. Khususnya pada project ini merupakan proses development dalam segi backend dalam penyediaan RESTfull API yang nantinya dibutuhkan untuk menjalankan aplikasi kontasan secara menyeluruh. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+Kontasan is a website-based POS application used to help cashier in managing orders. Particularly from backend side, this project is to providing API for Kontasa app to run its system. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
