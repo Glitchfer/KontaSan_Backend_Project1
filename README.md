@@ -43,7 +43,7 @@ IP=127.0.0.1 // IP
 
 **1. GET**
 
-- `/product`(Get all product)
+- `/product?page=1&limit=5`(Get all product)
 
 - `/product/:id`(GET product by id)
 
